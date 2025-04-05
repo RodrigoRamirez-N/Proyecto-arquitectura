@@ -1,0 +1,72 @@
+-- CRUD para Empleado
+USE GestionLimpieza;
+DELIMITER //
+
+CREATE PROCEDURE sp_CreateEmpleado(
+    IN p_nombre VARCHAR(255),
+    IN p_contrasena VARCHAR(255),
+    IN p_telefono VARCHAR(10),
+    OUT p_empleado_id INT
+)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SET p_empleado_id = -1;
+    END;
+    
+    START TRANSACTION;
+    
+    INSERT INTO Usuario(Nombre, Contrasenia, rol)
+    VALUES (p_nombre, p_contrasena, 'empleado');
+    
+    SET @usuario_id = LAST_INSERT_ID();
+    
+    INSERT INTO Empleado(empleado_id, telefono)
+    VALUES (@usuario_id, p_telefono);
+    
+    SET p_empleado_id = @usuario_id;
+    
+    COMMIT;
+END//
+
+CREATE PROCEDURE sp_GetEmpleadoById(
+    IN p_id INT
+)
+BEGIN
+    SELECT u.*, e.telefono 
+    FROM Usuario u
+    INNER JOIN Empleado e ON u.usuario_id = e.empleado_id
+    WHERE e.empleado_id = p_id;
+END//
+
+CREATE PROCEDURE sp_UpdateEmpleado(
+    IN p_id INT,
+    IN p_telefono VARCHAR(10),
+    IN p_nombre VARCHAR(255),
+    IN p_contrasena VARCHAR(255)
+)
+BEGIN
+    START TRANSACTION;
+    
+    UPDATE Usuario
+    SET Nombre = p_nombre,
+        Contrasenia = p_contrasena
+    WHERE usuario_id = p_id;
+    
+    UPDATE Empleado
+    SET telefono = p_telefono
+    WHERE empleado_id = p_id;
+    
+    COMMIT;
+END//
+
+CREATE PROCEDURE sp_GetAllEmpleados()
+BEGIN
+    SELECT u.usuario_id, u.Nombre, e.telefono 
+    FROM Usuario u
+    INNER JOIN Empleado e ON u.usuario_id = e.empleado_id;
+END//
+
+DELIMITER ;
+
