@@ -2,6 +2,13 @@
 USE GestionLimpieza;
 DELIMITER //
 
+DROP PROCEDURE IF EXISTS sp_CreateJefeCuadrilla;
+DROP PROCEDURE IF EXISTS sp_GetJefeCuadrillaById;
+DROP PROCEDURE IF EXISTS sp_UpdateJefeCuadrilla;
+DROP PROCEDURE IF EXISTS sp_GetAllJefesCuadrilla;
+DROP PROCEDURE IF EXISTS sp_AsignarJefeACuadrilla;
+DROP PROCEDURE IF EXISTS sp_RemoverJefeDeCuadrilla;
+
 CREATE PROCEDURE sp_CreateJefeCuadrilla(
     IN p_nombre VARCHAR(255),
     IN p_contrasena VARCHAR(255),
@@ -67,5 +74,46 @@ BEGIN
     FROM Usuario u
     INNER JOIN Jefe_Cuadrilla j ON u.usuario_id = j.jefe_cuadrilla_id;
 END//
+
+DROP PROCEDURE IF EXISTS sp_AsignarJefeACuadrilla;
+CREATE PROCEDURE sp_AsignarJefeACuadrilla (
+    IN p_jefe_id INT,
+    IN p_cuadrilla_id INT
+)
+BEGIN
+    -- Validar existencia del jefe
+    IF NOT EXISTS (SELECT 1 FROM Jefe_Cuadrilla WHERE jefe_cuadrilla_id = p_jefe_id) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'El jefe no existe';
+    END IF;
+
+    -- Validar existencia de la cuadrilla
+    IF NOT EXISTS (SELECT 1 FROM Cuadrilla WHERE cuadrilla_id = p_cuadrilla_id) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'La cuadrilla no existe';
+    END IF;
+
+    -- Asignar el jefe
+    UPDATE Cuadrilla
+    SET jefe_id = p_jefe_id
+    WHERE cuadrilla_id = p_cuadrilla_id;
+END //
+
+DROP PROCEDURE IF EXISTS sp_RemoverJefeDeCuadrilla;
+CREATE PROCEDURE sp_RemoverJefeDeCuadrilla (
+    IN p_cuadrilla_id INT
+)
+BEGIN
+    -- Validar existencia de la cuadrilla
+    IF NOT EXISTS (SELECT 1 FROM Cuadrilla WHERE cuadrilla_id = p_cuadrilla_id) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'La cuadrilla no existe';
+    END IF;
+
+    -- Quitar el jefe (setear a NULL)
+    UPDATE Cuadrilla
+    SET jefe_id = NULL
+    WHERE cuadrilla_id = p_cuadrilla_id;
+END //
 
 DELIMITER ;

@@ -1,10 +1,23 @@
 USE GestionLimpieza;
 
+-- Nueva Tabla Empleado (especialización de Usuario)
+-- CREATE TABLE Empleado (
+--     empleado_id INT PRIMARY KEY,
+--     telefono VARCHAR(10) NULL,
+--     FOREIGN KEY (empleado_id) REFERENCES Usuario(usuario_id)
+--         ON DELETE CASCADE
+-- );
+
+
 DROP TABLE IF EXISTS Actividad;
+DROP TABLE IF EXISTS Empleado_Cuadrilla;
+DROP TABLE IF EXISTS Empleado;
 DROP TABLE IF EXISTS Cuadrilla;
 DROP TABLE IF EXISTS Jefe_Cuadrilla;
 DROP TABLE IF EXISTS Usuario;
 DROP TABLE IF EXISTS Colonia;
+
+
 
 -- select rol from a combo box when creating a new user
 CREATE TABLE Usuario (
@@ -24,6 +37,14 @@ CREATE TABLE Jefe_Cuadrilla (
         ON UPDATE CASCADE
 );
 
+-- Nueva tabla Empleado (especialización de Usuario)
+CREATE TABLE Empleado (
+    empleado_id INT PRIMARY KEY,
+    telefono VARCHAR(10) NULL,
+    FOREIGN KEY (empleado_id) REFERENCES Usuario(usuario_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
 
 CREATE TABLE Colonia (
     cve_colonia INT PRIMARY KEY, 
@@ -33,15 +54,26 @@ CREATE TABLE Colonia (
 CREATE TABLE Cuadrilla (
     cuadrilla_id INT PRIMARY KEY AUTO_INCREMENT,
     NombreCuadrilla VARCHAR(255) NOT NULL,
-    jefe_id INT NOT NULL,
+    jefe_id INT NULL,
     Fecha DATE NULL, 
     FOREIGN KEY (jefe_id) REFERENCES Jefe_Cuadrilla(jefe_cuadrilla_id)
         ON DELETE RESTRICT ON UPDATE CASCADE
 ) ;
 
+-- Tabla intermedia
+CREATE TABLE Empleado_Cuadrilla (
+    cuadrilla_id INT,
+    empleado_id INT,
+    PRIMARY KEY (cuadrilla_id, empleado_id),
+    FOREIGN KEY (cuadrilla_id) REFERENCES Cuadrilla(cuadrilla_id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (empleado_id) REFERENCES Empleado(empleado_id)
+        ON DELETE CASCADE
+);
+
 -- select estado from a combo box
 -- select imagenEvidencia from a file chooser
--- select fecha from date picker 
+-- select fecha from date picker
 CREATE TABLE Actividad (
     actividad_id INT PRIMARY KEY AUTO_INCREMENT,
     Descripcion VARCHAR(1000) NULL,

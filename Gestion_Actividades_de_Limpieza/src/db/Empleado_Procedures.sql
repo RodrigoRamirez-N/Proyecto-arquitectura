@@ -2,6 +2,13 @@
 USE GestionLimpieza;
 DELIMITER //
 
+DROP PROCEDURE IF EXISTS sp_CreateEmpleado;
+DROP PROCEDURE IF EXISTS sp_GetEmpleadoById;
+DROP PROCEDURE IF EXISTS sp_UpdateEmpleado;
+DROP PROCEDURE IF EXISTS sp_GetAllEmpleados;
+DROP PROCEDURE IF EXISTS sp_DeleteEmpleado;
+
+
 CREATE PROCEDURE sp_CreateEmpleado(
     IN p_nombre VARCHAR(255),
     IN p_contrasena VARCHAR(255),
@@ -68,5 +75,26 @@ BEGIN
     INNER JOIN Empleado e ON u.usuario_id = e.empleado_id;
 END//
 
-DELIMITER ;
 
+CREATE PROCEDURE sp_DeleteEmpleado(
+    IN p_id INT
+)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+    END;
+
+    START TRANSACTION;
+
+    DELETE FROM Empleado
+    WHERE empleado_id = p_id;
+
+    DELETE FROM Usuario
+    WHERE usuario_id = p_id;
+
+    COMMIT;
+END//
+
+
+DELIMITER ;
