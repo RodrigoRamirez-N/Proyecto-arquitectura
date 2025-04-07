@@ -2,41 +2,41 @@ package model;
 
 public class Usuario {
 
-    private int idUsuario;
-    private String nombreUsuario;
-    private String passwordUsuario;
+    private int id;
+    private String nombre;
+    private String password;
     private String rol; // "JefeCuadrilla", "Empleado".
 
     // Constructor
-    public Usuario(int idUsuario, String nombreUsuario, String passwordUsuario, String rol) {
-        this.idUsuario = idUsuario;
-        this.nombreUsuario = nombreUsuario;
-        this.passwordUsuario = passwordUsuario;
+    public Usuario(int id, String nombre, String password, String rol) {
+        this.id = id;
+        this.nombre = nombre;
+        this.password = password;
         this.rol = rol;
     }
 
-    public int getIdUsuario() {
-        return idUsuario;
+    public int getId() {
+        return id;
     }
 
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getNombreUsuario() {
-        return nombreUsuario;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public String getPasswordUsuario() {
-        return passwordUsuario;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordUsuario(String passwordUsuario) {
-        this.passwordUsuario = passwordUsuario;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getRol() {
@@ -48,8 +48,8 @@ public class Usuario {
     }
 
     public String toString() {
-        return "Usuario [idUsuario=" + idUsuario + ", nombreUsuario=" + nombreUsuario + ", passwordUsuario="
-                + passwordUsuario + ", rol=" + rol + "]";
+        return " [id=" + id + ", nombre=" + nombre + ", password="
+                + password + ", rol=" + rol + "]";
     }
 
 }
