@@ -17,8 +17,8 @@ public class Empleado extends Usuario {
     }
 
     public String toString() {
-        return "Empleado [idEmpleado=" + getIdUsuario() + ", nombreEmpleado=" + getNombreUsuario() + 
-                                ", passwordEmpleado=" + getPasswordUsuario() + ", rol=" + getRol() + "]";
+        return "Empleado [idEmpleado=" + getId() + ", nombreEmpleado=" + getNombre() + 
+                                ", passwordEmpleado=" + getPassword() + ", rol=" + getRol() + "]";
     }
     
 }

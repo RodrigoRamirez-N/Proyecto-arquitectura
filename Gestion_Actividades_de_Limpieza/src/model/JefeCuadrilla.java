@@ -25,8 +25,8 @@ public class JefeCuadrilla extends Usuario {
 
     @Override   
     public String toString() {
-        return "JefeCuadrilla [idJefe=" + getIdUsuario() + ", nombreJefe=" + getNombreUsuario() + 
-                                ", passwordJefe=" + getPasswordUsuario() + ", rol=" + getRol() + "]";
+        return "JefeCuadrilla [idJefe=" + getId() + ", nombreJefe=" + getNombre() + 
+                                ", passwordJefe=" + getPassword() + ", rol=" + getRol() + "]";
     }
 
 }
