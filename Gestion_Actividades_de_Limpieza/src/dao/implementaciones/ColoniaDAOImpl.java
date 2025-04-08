@@ -56,9 +56,10 @@ public class ColoniaDAOImpl implements ColoniaDAO{
             ResultSet rs = conn.comando.executeQuery();
 
             if (rs.next()) {
-                colonia = new Colonia();
-                colonia.setCveColonia(rs.getInt("cveColonia"));
-                colonia.setNombreColonia(rs.getString("nombreColonia"));
+                colonia = new Colonia(
+                    rs.getInt("cveColonia"),
+                    rs.getString("nombreColonia")
+                );
             } else {
                 System.out.println("No se encontró la colonia con ID: " + idColonia);
             }
@@ -69,6 +70,7 @@ public class ColoniaDAOImpl implements ColoniaDAO{
         } finally {
             conn.closeConnection();
         }
+        return colonia;
 	}
 
 	@Override
@@ -138,9 +140,10 @@ public class ColoniaDAOImpl implements ColoniaDAO{
             ResultSet rs = conn.comando.executeQuery();
 
             while (rs.next()) {
-                colonia = new Colonia(); // pk vergas marca error el constructor?
-                colonia.setCveColonia(rs.getInt("cveColonia"));
-                colonia.setNombreColonia(rs.getString("nombreColonia"));
+                colonia = new Colonia(
+                    rs.getInt("cveColonia"),
+                    rs.getString("nombreColonia")
+                ); 
                 colonias.add(colonia);
             }
 
