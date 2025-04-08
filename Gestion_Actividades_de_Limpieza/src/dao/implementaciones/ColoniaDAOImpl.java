@@ -128,6 +128,7 @@ public class ColoniaDAOImpl implements ColoniaDAO{
 	@Override
 	public List<Colonia> getAll() {
 		Conexion conn = new Conexion();
+        Colonia colonia = null;
         List<Colonia> colonias = new ArrayList<>();
 
         try {
@@ -137,7 +138,7 @@ public class ColoniaDAOImpl implements ColoniaDAO{
             ResultSet rs = conn.comando.executeQuery();
 
             while (rs.next()) {
-                Colonia colonia = new Colonia(); // pk vergas marca error el constructor?
+                colonia = new Colonia(); // pk vergas marca error el constructor?
                 colonia.setCveColonia(rs.getInt("cveColonia"));
                 colonia.setNombreColonia(rs.getString("nombreColonia"));
                 colonias.add(colonia);
