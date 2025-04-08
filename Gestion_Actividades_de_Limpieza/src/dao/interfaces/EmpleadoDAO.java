@@ -6,10 +6,10 @@ import model.Empleado;
 
 public interface EmpleadoDAO {
 
-    int createEmpleado(Empleado empleado) throws SQLException;
-    Empleado readEmpleado(int idEmpleado) throws SQLException;
-    void updateEmpleado(Empleado empleado) throws SQLException;
-    boolean deleteEmpleado(int idEmpleado) throws SQLException;
+    int create(Empleado empleado) throws SQLException;
+    Empleado read(int idEmpleado) throws SQLException;
+    void update(Empleado empleado) throws SQLException;
+    boolean delete(int idEmpleado) throws SQLException;
 
     List<Empleado> getAllEmpleados() throws SQLException;
     void asignarEmpleadoACuadrilla(int idEmpleado, int idCuadrilla) throws SQLException; // asignar empleado a cuadrilla

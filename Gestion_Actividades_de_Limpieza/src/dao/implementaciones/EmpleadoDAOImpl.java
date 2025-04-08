@@ -2,7 +2,6 @@ package dao.implementaciones;
 
 import dao.interfaces.EmpleadoDAO;
 import model.Empleado;
-import model.Usuario;
 import java.util.List;
 import util.Conexion;
 import java.sql.*;
@@ -19,7 +18,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
             conn.comando = conn.cnx.prepareCall(call);
 
             conn.comando.setString(1, empleado.getNombre());
-            conn.comando.setString(2, empleado.getContrasena());
+            conn.comando.setString(2, empleado.getPassword());
             conn.comando.setString(3, empleado.getTelefono());
             conn.comando.registerOutParameter(4, Types.INTEGER);
 
@@ -39,7 +38,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
             e.printStackTrace();
             return -1;
         } finally {
-            conn.cerrarConexion();
+            conn.closeConnection();
         }
     }
 
@@ -56,11 +55,14 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
             ResultSet rs = conn.comando.executeQuery();
 
             if(rs.next()){
-                empleado = new Empleado();
-                empleado.setId(rs.getInt("empleado_id")); //method setId comes from user class
-                empleado.setNombre(rs.getString("nombre")); //method comes from user
-                empleado.setPassword(rs.getString("contrasena").hashCode()); // Hashing the password also comes from user class
-                empleado.setTelefono(rs.getString("telefono")); // method comes from empleado
+                empleado = new Empleado(
+                    rs.getInt("empleado_id"),
+                    rs.getString("nombre"),
+                    Integer.toString(rs.getString("contrasena").hashCode()),
+                    rs.getString("rol"),
+                    rs.getString("telefono")
+                );
+
             } else {
                 System.out.println("No se encontró el empleado con ID: " + idEmpleado);
             }
@@ -90,7 +92,6 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 
             if(rowsAffected > 0) {
                 System.out.println("Empleado actualizado con ID: " + empleado.getId());
-                return empleado;
             } else {
                 System.err.println("Error al actualizar el empleado: ID no válido");
             }
@@ -129,11 +130,10 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
         } finally {
             conn.closeConnection();
         }
-        return true;
     }
 
     @Override
-    public List<Empleado> getAll() throws SQLException {
+    public List<Empleado> getAllEmpleados() throws SQLException {
         Conexion conn = new Conexion();
         List<Empleado> empleados = new ArrayList<>();
 
@@ -144,12 +144,13 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
             ResultSet rs = conn.comando.executeQuery();
 
             while(rs.next()) {
-                Empleado empleado = new Empleado();
-                empleado.setId(rs.getInt("empleado_id"));
-                empleado.setNombre(rs.getString("nombre"));
-                empleado.setPassword(rs.getString("contrasena").hashCode());
-                empleado.setTelefono(rs.getString("telefono"));
-
+                Empleado empleado = new Empleado(
+                    rs.getInt("empleado_id"),
+                    rs.getString("nombre"),
+                    Integer.toString(rs.getString("contrasena").hashCode()),
+                    rs.getString("rol"),
+                    rs.getString("telefono")
+                );
                 empleados.add(empleado);
             }
         } catch (SQLException e) {
@@ -228,12 +229,13 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
             ResultSet rs = conn.comando.executeQuery();
 
             while(rs.next()) {
-                Empleado empleado = new Empleado();
-                empleado.setId(rs.getInt("empleado_id"));
-                empleado.setNombre(rs.getString("nombre"));
-                empleado.setPassword(rs.getString("contrasena").hashCode());
-                empleado.setTelefono(rs.getString("telefono"));
-
+                Empleado empleado = new Empleado(
+                    rs.getInt("empleado_id"),
+                    rs.getString("nombre"),
+                    Integer.toString(rs.getString("contrasena").hashCode()),
+                    rs.getString("rol"),
+                    rs.getString("telefono")
+                );
                 empleados.add(empleado);
             }
         } catch (SQLException e) {
@@ -242,7 +244,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
         } finally {
             conn.closeConnection();
         }
-
+        return empleados;
     }
 
 }
