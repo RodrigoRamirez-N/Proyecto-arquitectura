@@ -2,6 +2,12 @@
 USE GestionLimpieza;
 DELIMITER //
 
+DROP PROCEDURE IF EXISTS sp_CrearUsuario;
+DROP PROCEDURE IF EXISTS sp_ObtenerUsuario;
+DROP PROCEDURE IF EXISTS sp_ActualizarUsuario;
+DROP PROCEDURE IF EXISTS sp_EliminarUsuario;
+DROP PROCEDURE IF EXISTS sp_AutenticarUsuario;
+
 -- Crear
 CREATE PROCEDURE sp_CrearUsuario(
     IN p_Nombre VARCHAR(255),
@@ -50,13 +56,18 @@ END//
 -- Autenticar
 CREATE PROCEDURE sp_AutenticarUsuario(
     IN p_Nombre VARCHAR(255),
-    IN p_Contrasenia VARCHAR(255)
+    IN p_Contrasenia VARCHAR(255),
+    OUT p_is_authenticated BOOLEAN
 )
 BEGIN
-    SELECT usuario_id, Nombre, rol 
-    FROM Usuario 
+    DECLARE user_count INT;
+
+    SELECT COUNT(*) INTO user_count
+    FROM Usuario
     WHERE Nombre = p_Nombre 
     AND Contrasenia = p_Contrasenia;
+
+    SET p_is_authenticated = (user_count > 0);
 END//
 
 DELIMITER ;
