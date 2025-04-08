@@ -57,17 +57,24 @@ END//
 CREATE PROCEDURE sp_AutenticarUsuario(
     IN p_Nombre VARCHAR(255),
     IN p_Contrasenia VARCHAR(255),
-    OUT p_is_authenticated BOOLEAN
+    OUT p_is_authenticated BOOLEAN,
+    OUT p_idUsuario INT
 )
 BEGIN
-    DECLARE user_count INT;
+    DECLARE v_id INT;
 
-    SELECT COUNT(*) INTO user_count
+    SELECT id INTO v_id
     FROM Usuario
     WHERE Nombre = p_Nombre 
     AND Contrasenia = p_Contrasenia;
 
-    SET p_is_authenticated = (user_count > 0);
-END//
+    IF v_id IS NOT NULL THEN
+        SET p_is_authenticated = TRUE;
+        SET p_idUsuario = v_id;
+    ELSE
+        SET p_is_authenticated = FALSE;
+        SET p_idUsuario = NULL;
+    END IF;
+END //
 
 DELIMITER ;

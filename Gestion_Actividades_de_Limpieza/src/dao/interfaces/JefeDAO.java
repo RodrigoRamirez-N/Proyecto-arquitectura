@@ -10,7 +10,7 @@ public interface JefeDAO {
     // CRUD basico
     int createJefeCuadrilla(Jefe jefeCuadrilla) throws SQLException; // Ajustar el tipo de retorno según la implementación
     Jefe readJefeCuadrilla(int idJefeCuadrilla) throws SQLException;
-    Jefe updateJefeCuadrilla(Jefe jefeCuadrilla) throws SQLException;
+    void updateJefeCuadrilla(Jefe jefeCuadrilla) throws SQLException;
     boolean deleteJefeCuadrilla(int idJefeCuadrilla) throws SQLException;
 
     // Consultas concretas
