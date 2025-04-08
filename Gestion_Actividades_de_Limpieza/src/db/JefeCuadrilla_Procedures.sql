@@ -116,4 +116,22 @@ BEGIN
     WHERE cuadrilla_id = p_cuadrilla_id;
 END //
 
+DROP PROCEDURE IF EXISTS sp_DeleteJefeCuadrilla;
+CREATE PROCEDURE sp_DeleteJefeCuadrilla(
+    IN p_id INT
+)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+    END;
+    
+    START TRANSACTION;
+    
+    DELETE FROM Jefe_Cuadrilla WHERE jefe_cuadrilla_id = p_id;
+    DELETE FROM Usuario WHERE usuario_id = p_id;
+    
+    COMMIT;
+END//
+
 DELIMITER ;
