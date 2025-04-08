@@ -2,7 +2,6 @@ package dao.implementaciones;
 
 import dao.interfaces.JefeDAO;
 import model.Jefe;
-import model.Usuario;
 import java.util.List;
 import util.Conexion;
 import java.sql.*;
@@ -18,9 +17,9 @@ public class JefeDAOImpl implements JefeDAO {
             String call = "{call sp_CreateJefeCuadrilla(?,?,?,?)}";
             conn.comando = conn.cnx.prepareCall(call);
 
-            conn.comando.setString(1, empleado.getNombre());
-            conn.comando.setString(2, empleado.getContrasena());
-            conn.comando.setString(3, empleado.getTelefono());
+            conn.comando.setString(1, jefe.getNombre());
+            conn.comando.setString(2, jefe.getPassword());
+            conn.comando.setString(3, jefe.getTelefono());
             conn.comando.registerOutParameter(4, Types.INTEGER);
 
             conn.comando.execute();
@@ -39,7 +38,7 @@ public class JefeDAOImpl implements JefeDAO {
             e.printStackTrace();
             return -1;
         } finally {
-            conn.cerrarConexion();
+            conn.closeConnection();
         }
     }
 
@@ -56,11 +55,13 @@ public class JefeDAOImpl implements JefeDAO {
             ResultSet rs = conn.comando.executeQuery();
 
             if(rs.next()){
-                jefe = new Jefe();
-                jefe.setId(rs.getInt("jefe_id")); //method setId comes from user class
-                jefe.setNombre(rs.getString("nombre")); //method comes from user
-                jefe.setPassword(rs.getString("contrasena").hashCode()); // Hashing the password also comes from user class
-                jefe.setTelefono(rs.getString("telefono")); // method comes from jefe
+                jefe = new Jefe(
+                    rs.getInt("jefe_cuadrilla_id"),
+                    rs.getString("nombre"),
+                    Integer.toString(rs.getString("contrasena").hashCode()),
+                    rs.getString("rol"),
+                    rs.getString("telefono")
+                ); 
             } else {
                 System.out.println("No se encontró el jefe con ID: " + idJefe);
             }
@@ -90,7 +91,6 @@ public class JefeDAOImpl implements JefeDAO {
 
             if(rowsAffected > 0) {
                 System.out.println("Jefe actualizado con ID: " + jefe.getId());
-                return jefe;
             } else {
                 System.err.println("Error al actualizar el jefe: ID no válido");
             }
@@ -129,11 +129,11 @@ public class JefeDAOImpl implements JefeDAO {
         } finally {
             conn.closeConnection();
         }
-        return true;
+
     }
 
     @Override
-    public List<Jefe> getAll() throws SQLException {
+    public List<Jefe> getAllJefesCuadrilla() throws SQLException {
         Conexion conn = new Conexion();
         List<Jefe> jefes = new ArrayList<>();
 
@@ -144,12 +144,13 @@ public class JefeDAOImpl implements JefeDAO {
             ResultSet rs = conn.comando.executeQuery();
 
             while(rs.next()) {
-                Jefe jefe = new Jefe();
-                jefe.setId(rs.getInt("jefe_cuadrilla_id"));
-                jefe.setNombre(rs.getString("nombre"));
-                jefe.setPassword(rs.getString("contrasena").hashCode());
-                jefe.setTelefono(rs.getString("telefono"));
-
+                Jefe jefe = new Jefe(
+                    rs.getInt("jefe_cuadrilla_id"),
+                    rs.getString("nombre"),
+                    Integer.toString(rs.getString("contrasena").hashCode()),
+                    rs.getString("rol"),
+                    rs.getString("telefono")
+                );
                 jefes.add(jefe);
             }
         } catch (SQLException e) {
