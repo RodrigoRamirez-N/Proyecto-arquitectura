@@ -15,5 +15,6 @@ public interface JefeDAO {
 
     // Consultas concretas
     List<Jefe> getAllJefesCuadrilla() throws SQLException; // listar todos los jefes de cuadrilla
-
+    void asignarJefeACuadrilla(int idJefeCuadrilla, int idCuadrilla) throws SQLException; // asignar jefe a cuadrilla
+    void removerJefeDeCuadrilla(int idCuadrilla) throws SQLException; // remover jefe de cuadrilla
 }

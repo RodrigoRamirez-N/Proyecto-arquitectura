@@ -12,5 +12,7 @@ public interface EmpleadoDAO {
     boolean deleteEmpleado(int idEmpleado) throws SQLException;
 
     List<Empleado> getAllEmpleados() throws SQLException;
-    
+    void asignarEmpleadoACuadrilla(int idEmpleado, int idCuadrilla) throws SQLException; // asignar empleado a cuadrilla
+    void removerEmpleadoDeCuadrilla(int idEmpleado, int idCuadrilla) throws SQLException; // remover empleado de cuadrilla
+    List<Empleado> getEmpleadosByCuadrilla(int idCuadrilla) throws SQLException; // obtener empleados por cuadrilla    
 }
