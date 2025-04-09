@@ -1,11 +1,11 @@
 package model;
 
 public class Empleado extends Usuario {
-    private String telefono; // id de la cuadrilla que lidera
+    private String telefono;
 
     public Empleado(int idEmpleado, String nombreEmpleado, String passwordEmpleado, String rol, String telefono) {
         super(idEmpleado, nombreEmpleado, passwordEmpleado, rol);
-        this.telefono = telefono; // id de la cuadrilla que lidera
+        this.telefono = telefono; 
     }
 
     public String getTelefono() {
