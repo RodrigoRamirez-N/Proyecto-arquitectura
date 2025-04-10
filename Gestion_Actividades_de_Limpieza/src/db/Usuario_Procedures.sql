@@ -7,6 +7,53 @@ DROP PROCEDURE IF EXISTS sp_ObtenerUsuario;
 DROP PROCEDURE IF EXISTS sp_ActualizarUsuario;
 DROP PROCEDURE IF EXISTS sp_EliminarUsuario;
 DROP PROCEDURE IF EXISTS sp_AutenticarUsuario;
+DROP PROCEDURE IF EXISTS sp_CrearAdmin;
+DROP PROCEDURE IF EXISTS sp_EliminarAdministrador;
+DROP PROCEDURE IF EXISTS sp_ActualizarAdministrador;
+DROP PROCEDURE IF EXISTS sp_CambiarContrasena;
+
+CREATE PROCEDURE sp_ObtenerAdministradores()
+BEGIN
+    SELECT * FROM Usuario WHERE rol = 'admin';
+END//
+
+CREATE PROCEDURE sp_CrearAdmin(
+    IN p_Nombre VARCHAR(255),
+    IN p_Contrasenia VARCHAR(255)
+)
+BEGIN
+    INSERT INTO Usuario(Nombre, Contrasenia, rol)
+    VALUES (p_Nombre, p_Contrasenia, 'admin');
+END//
+
+CREATE PROCEDURE sp_EliminarAdministrador(
+    IN p_usuario_id INT
+)
+BEGIN
+    DELETE FROM Usuario WHERE usuario_id = p_usuario_id AND rol = 'admin';
+END//
+
+CREATE PROCEDURE sp_ActualizarAdministrador(
+    IN p_usuario_id INT,
+    IN p_Nombre VARCHAR(255),
+    IN p_Contrasenia VARCHAR(255)
+)
+BEGIN
+    UPDATE Usuario
+    SET Nombre = p_Nombre,
+        Contrasenia = p_Contrasenia
+    WHERE usuario_id = p_usuario_id AND rol = 'admin';
+END//
+
+CREATE PROCEDURE sp_CambiarContrasena(
+    IN p_usuario_id INT,
+    IN p_Contrasenia VARCHAR(255)
+)
+BEGIN
+    UPDATE Usuario
+    SET Contrasenia = p_Contrasenia
+    WHERE usuario_id = p_usuario_id;
+END//
 
 -- Crear
 CREATE PROCEDURE sp_CrearUsuario(

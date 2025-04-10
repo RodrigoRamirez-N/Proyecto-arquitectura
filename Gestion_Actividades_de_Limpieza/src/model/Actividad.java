@@ -8,16 +8,18 @@ public class Actividad {
     private String descripcionActivdad;
     private Date fechaActividad;
     private String evidenciaURL;
+    private String estado; // estado de la actividad (en proceso, finalizada, cancelada)
     private int idCuadrilla; // fk cuadrilla
     private int idColonia; // fk colonia
     private int idUsuario; // fk usuario (jefe de cuadrilla)
 
-    public Actividad(int idActividad, String descripcionActivdad, Date fechaActividad, String evidenciaURL,
-            int idCuadrilla, int idColonia, int idUsuario) {
+    public Actividad(int idActividad, String descripcionActivdad, Date fechaActividad, String 
+            evidenciaURL, String estado, int idCuadrilla, int idColonia, int idUsuario) {
         this.idActividad = idActividad;
         this.descripcionActivdad = descripcionActivdad;
         this.fechaActividad = fechaActividad;
         this.evidenciaURL = evidenciaURL;
+        this.estado = estado;
         this.idCuadrilla = idCuadrilla;
         this.idColonia = idColonia;
         this.idUsuario = idUsuario;
@@ -67,6 +69,14 @@ public class Actividad {
         return idColonia;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     public void setIdColonia(int idColonia) {
         this.idColonia = idColonia;
     }
@@ -82,8 +92,8 @@ public class Actividad {
     @Override
     public String toString() {
         return "Actividad [idActividad=" + idActividad + ", descripcionActivdad=" + descripcionActivdad
-                + ", fechaActividad=" + fechaActividad + ", evidenciaURL=" + evidenciaURL + ", idCuadrilla="
-                + idCuadrilla + ", idColonia=" + idColonia + ", idUsuario=" + idUsuario + "]";
+                + ", fechaActividad=" + fechaActividad + ", evidenciaURL=" + evidenciaURL + ", estado=" + estado
+                + ", idCuadrilla=" + idCuadrilla + ", idColonia=" + idColonia + ", idUsuario=" + idUsuario + "]";
     }
 
 }

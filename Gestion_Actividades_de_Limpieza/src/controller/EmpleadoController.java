@@ -1,6 +1,8 @@
 package controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import dao.interfaces.EmpleadoDAO;
 import model.Empleado;
@@ -19,38 +21,37 @@ public class EmpleadoController {
     // para mantener la logica de negocio separada de la logica de acceso a datos
     // en el dao solo manejo excepciones referentes a las operaciones SQL
 
+    private boolean validarEmpleadoFields(Empleado emp) {
+        // validaciones, por ejemplo que el id no sea negativo
+        if (emp.getId() < 0) {
+            throw new IllegalArgumentException("El id no puede ser negativo");
+        }
+        // validaciones, por ejemplo que el nombre no sea null o vacio
+        if (emp.getNombre() == null || emp.getNombre().isEmpty()) {
+            throw new IllegalArgumentException("El nombre no puede ser nulo o vacio");
+        }
+        // validaciones, por ejemplo que el password no sea null o vacio
+        if (emp.getPassword() == null || emp.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("El password no puede ser nulo o vacio");
+        }
+        // validaciones, por ejemplo que el rol no sea null o vacio
+        if (emp.getRol() == null || emp.getRol().isEmpty()) {
+            throw new IllegalArgumentException("El rol no puede ser nulo o vacio");
+        }
+        // validaciones, por ejemplo que el telefono no sea null o vacio
+        if (emp.getTelefono() == null || emp.getTelefono().isEmpty()) {
+            throw new IllegalArgumentException("El telefono no puede ser nulo o vacio");
+        }
+        return true;
+    }
+
     public void crearEmpleado(String nombre, String password, String rol, String telefono) {
-        // validaciones, por ejemplo que ningun campo sea null o vacio
-        if (nombre == null || password == null || rol == null || telefono == null) {
-            throw new IllegalArgumentException("Ningun campo puede ser nulo");
-        }
-        if (nombre.isEmpty() || password.isEmpty() || rol.isEmpty() || telefono.isEmpty()) {
-            throw new IllegalArgumentException("Ningun campo puede estar vacio");
-        }
-        // para crear un empleado el rol debe ser de empleado unicamente
-        if (!rol.equals("empleado")) {
-            throw new IllegalArgumentException("El rol debe ser 'empleado'");
-        }
-        // para crear un empleado el telefono debe ser un numero de 10 digitos
-        if (telefono.length() != 10) {
-            throw new IllegalArgumentException("El telefono debe ser un numero de 10 digitos");
-        }
-        // para crear un empleado el password debe ser de al menos 8 caracteres
-        if (password.length() < 8) {
-            throw new IllegalArgumentException("El password debe ser de al menos 8 caracteres");
-        }
-        // para crear un empleado el nombre no debe tener caracteres especiales
-        if (!nombre.matches("[a-zA-Z0-9 ]*")) {
-            throw new IllegalArgumentException("El nombre no puede tener caracteres especiales");
-        }
-        // para crear un empleado el telefono no debe tener caracteres especiales
-        if (!telefono.matches("[0-9]*")) {
-            throw new IllegalArgumentException("El telefono no puede tener caracteres especiales");
-        }
         
         Empleado emp = new Empleado(0, nombre, password, rol, telefono);
         // el id se asigna automáticamente en la base de datos asi que se le asigna 0 al crear el objeto
-
+        if (!validarEmpleadoFields(emp)) {
+            throw new IllegalArgumentException("Los campos del empleado no son validos");
+        }
         try {
             empleadoDAO.create(emp);
         } catch (SQLException e) { 
@@ -59,9 +60,84 @@ public class EmpleadoController {
     }
     
     public void leerEmpleado(int idEmpleado) {
-        // Lógica para leer un empleado utilizando el DAO
+        if( idEmpleado < 0) {
+            throw new IllegalArgumentException("El id no puede ser negativo");
+        }
+
+        try {
+            Empleado emp = empleadoDAO.read(idEmpleado);
+            System.out.println(emp.toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     
-    // Otros métodos según sea necesario
-    
+    public void deleteEmpleado(int idEmpleado) {
+        if( idEmpleado < 0) {
+            throw new IllegalArgumentException("El id no puede ser negativo");
+        }
+        try {
+            empleadoDAO.delete(idEmpleado);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void updateEmpleado(int idEmpleado, String nombre, String password, String rol, String telefono) {
+        if( idEmpleado < 0) {
+            throw new IllegalArgumentException("El id no puede ser negativo");
+        }
+        Empleado emp = new Empleado(idEmpleado, nombre, password, rol, telefono);
+        if (!validarEmpleadoFields(emp)) {
+            throw new IllegalArgumentException("Los campos del empleado no son validos");
+        }
+        try {
+            empleadoDAO.update(emp);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Empleado> getAllEmpleados() {
+        List<Empleado> empleados = new ArrayList<>();
+        try {
+            empleados = empleadoDAO.getAllEmpleados();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return empleados;
+    }
+
+    public List<Empleado> getEmpleadosByCuadrilla(int idCuadrilla) {
+        List<Empleado> empleados = new ArrayList<>();
+        try {
+            empleados = empleadoDAO.getEmpleadosByCuadrilla(idCuadrilla);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return empleados;
+    }
+
+    public void asignarEmpleadoACuadrilla(int idEmpleado, int idCuadrilla) {
+        if( idEmpleado < 0 || idCuadrilla < 0) {
+            throw new IllegalArgumentException("El id no puede ser negativo");
+        }
+        try {
+            empleadoDAO.asignarEmpleadoACuadrilla(idEmpleado, idCuadrilla);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removerEmpleadoDeCuadrilla(int idEmpleado, int idCuadrilla) {
+        if( idEmpleado < 0 || idCuadrilla < 0) {
+            throw new IllegalArgumentException("El id no puede ser negativo");
+        }
+        try {
+            empleadoDAO.removerEmpleadoDeCuadrilla(idEmpleado, idCuadrilla);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

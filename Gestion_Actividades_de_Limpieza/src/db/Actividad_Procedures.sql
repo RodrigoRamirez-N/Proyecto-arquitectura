@@ -1,6 +1,23 @@
 USE GestionLimpieza;
 DELIMITER //
 
+DROP PROCEDURE IF EXISTS sp_DeleteActividad//
+DROP PROCEDURE IF EXISTS sp_CreateActividad//
+DROP PROCEDURE IF EXISTS sp_GetActividadById//
+DROP PROCEDURE IF EXISTS sp_UpdateActividad//
+DROP PROCEDURE IF EXISTS sp_GetAllActividades//
+DROP PROCEDURE IF EXISTS sp_GetActividadesByColonia//
+DROP PROCEDURE IF EXISTS sp_SubirEvidencia//
+DROP PROCEDURE IF EXISTS sp_GetActividadesByCuadrilla//
+DROP PROCEDURE IF EXISTS sp_GetActividadesByFecha//
+
+CREATE PROCEDURE sp_DeleteActividad(
+    IN p_actividad_id INT
+)
+BEGIN
+    DELETE FROM Actividad WHERE actividad_id = p_actividad_id;
+END//
+
 CREATE PROCEDURE sp_CreateActividad(
     IN p_Descripcion VARCHAR(1000),
     IN p_Fecha DATE,

@@ -17,8 +17,7 @@ public interface ActividadDAO {
     List<Actividad> getByColonia(int idColonia) throws SQLException; //retorna una lista de objetos Actividad por idColonia
     List<Actividad> getByCuadrilla(int idCuadrilla) throws SQLException; //retorna una lista de objetos Actividad por idCuadrilla
     List<Actividad> getByFecha(String fecha) throws SQLException; //retorna una lista de objetos Actividad por fecha
-    boolean subirEvidencia(int idActividad, String rutaImagen) throws SQLException; //retorna true si se subio la evidencia, false si no se encontro el objeto a actualizar
-
+    
     //rutaImagen puede ser nullable? se puede dejar como vacío si se especifica que la actividad no tiene evidencia o sea que no ha sido terminada o sea que sigue en proceso...
 
 }
