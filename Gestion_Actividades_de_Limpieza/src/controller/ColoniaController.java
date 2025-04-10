@@ -17,9 +17,9 @@ public class ColoniaController {
 
     // Método para crear una colonia
     public int crearColonia(String nombreColonia) {
-        Colonia nuevaColonia = new Colonia(0, nombreColonia); // El ID es autoincremental
+        Colonia nuevaColonia = new Colonia(0, nombreColonia);
         try {
-            return coloniaDAO.create(nuevaColonia);
+            return coloniaDAO.create(nuevaColonia); // Retorna el ID
         } catch (SQLException e) {
             System.out.println("Error al crear colonia: " + e.getMessage());
             return -1;

@@ -48,3 +48,12 @@ CALL sp_GetCuadrillaById(1);
 -- poblada la tabla colonia
 USE GestionLimpieza;
 SELECT * FROM Colonia;
+
+USE GestionLimpieza;
+DELETE FROM Colonia;
+DELETE FROM Cuadrilla;
+DELETE FROM Jefe_Cuadrilla;
+DELETE FROM Empleado_Cuadrilla;
+DELETE FROM Empleado;
+DELETE FROM Actividad;
+DELETE FROM Usuario;

@@ -9,11 +9,14 @@ DROP PROCEDURE IF EXISTS sp_GetAllColonias;
 DELIMITER //
 
 CREATE PROCEDURE sp_CreateColonia(
-    IN p_NombreColonia VARCHAR(255)
+    IN p_nombre VARCHAR(255),
+    OUT p_id_colonia INT
 )
 BEGIN
-    INSERT INTO Colonia(NombreColonia)
-    VALUES (p_NombreColonia);
+    INSERT INTO Colonia(NombreColonia) 
+    VALUES (p_nombre);
+    
+    SET p_id_colonia = LAST_INSERT_ID(); -- Retorna el ID generado
 END//
 
 CREATE PROCEDURE sp_GetColoniaById(

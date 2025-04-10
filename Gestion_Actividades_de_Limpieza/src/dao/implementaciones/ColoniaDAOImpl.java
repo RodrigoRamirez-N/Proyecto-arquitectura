@@ -11,37 +11,24 @@ import util.Conexion;
 
 public class ColoniaDAOImpl implements ColoniaDAO{
 
-	@Override
 	public int create(Colonia colonia) throws SQLException {
-		Conexion conn = new Conexion();
-
+        Conexion conexion = new Conexion();
         try {
-            String call = "{call sp_CreateColonia(?,?,?)}";
-            conn.comando = conn.cnx.prepareCall(call);
-
-            conn.comando.setInt(1, colonia.getCveColonia());
-            conn.comando.setString(2, colonia.getNombreColonia());
-            conn.comando.registerOutParameter(3, java.sql.Types.INTEGER);
-
-            conn.comando.execute();
-
-            int resultId = conn.comando.getInt(3);
-            if(resultId > 0) {
-                System.out.println("Colonia creada con ID: " + resultId);
-                return resultId;
-            } else {
-                System.err.println("(ifStmt)Error al crear colonia: ID no válido");
-                return -1;
-            }
-
+            // Si usas un SP con parámetro OUT para el ID:
+            conexion.prepareCall("sp_CreateColonia", 2); // 2 parámetros (nombre, OUT id)
+            conexion.comando.setString(1, colonia.getNombreColonia());
+            conexion.registerOutParameter(2, java.sql.Types.INTEGER);
+            conexion.comando.execute();
+            
+            int nuevoId = conexion.comando.getInt(2); // Recuperar el ID generado
+            return nuevoId;
         } catch (SQLException e) {
-            System.out.println("(catch)Error al crear colonia: ");
-            e.printStackTrace();
+            System.err.println("Error al crear colonia: " + e.getMessage());
             return -1;
         } finally {
-            conn.closeConnection();
+            conexion.closeConnection();
         }
-	}
+    }
 
 	@Override
 	public Colonia read(int idColonia) throws SQLException {
@@ -57,8 +44,8 @@ public class ColoniaDAOImpl implements ColoniaDAO{
 
             if (rs.next()) {
                 colonia = new Colonia(
-                    rs.getInt("cveColonia"),
-                    rs.getString("nombreColonia")
+                    rs.getInt("cve_Colonia"),
+                    rs.getString("NombreColonia")
                 );
             } else {
                 System.out.println("No se encontró la colonia con ID: " + idColonia);

@@ -18,40 +18,37 @@ public class ActividadDAOImpl implements ActividadDAO {
 
     @Override
     public Actividad create(Actividad actividad) throws SQLException {
+        Conexion conexion = new Conexion();
         try {
-            conexion.prepareCall("sp_CreateActividad", 8);
-            conexion.comando.setString(1, actividad.getDescripcionActivdad());
-            conexion.comando.setDate(2, new java.sql.Date(actividad.getFechaActividad().getTime()));
-            conexion.comando.setString(3, actividad.getEvidenciaURL());
+            conexion.prepareCall("sp_CreateActividad", 8); // 7 IN + 1 OUT = 8 parámetros
+            conexion.comando.setString(1, actividad.getDescripcion());
+            conexion.comando.setDate(2, new java.sql.Date(actividad.getFecha().getTime()));
+            conexion.comando.setString(3, actividad.getImagenEvidencia());
             conexion.comando.setString(4, actividad.getEstado());
-            conexion.comando.setInt(5, actividad.getIdCuadrilla());
-            conexion.comando.setInt(6, actividad.getIdColonia());
-            conexion.comando.setInt(7, actividad.getIdUsuario());
+            conexion.comando.setInt(5, actividad.getCuadrilla_id());
+            conexion.comando.setInt(6, actividad.getCve_colonia());
+            conexion.comando.setInt(7, actividad.getUsuario_registro_id()); // id del user que registra la actividad
+            // El último parámetro es un OUT para obtener el nuevo ID de la actividad creada
             conexion.registerOutParameter(8, Types.INTEGER);
-            conexion.execute();
-
-            int id = conexion.comando.getInt(8);
-            actividad.setIdActividad(id);
-            System.out.println("Actividad creada con ID: " + id);
+            conexion.comando.execute();
+    
+            int nuevoId = conexion.comando.getInt(8);
+            actividad.setActividad_id(nuevoId);
             return actividad;
-        } catch (SQLException e) {
-            System.err.println("Error al crear la actividad: " + e.getMessage());
-            e.printStackTrace();
         } finally {
             conexion.closeConnection();
         }
-        return null;
     }
 
     @Override
     public Actividad read(int id) throws SQLException {
+        Conexion conexion = new Conexion();
         try {
             conexion.prepareCall("sp_GetActividadById", 1);
             conexion.comando.setInt(1, id);
             ResultSet rs = conexion.executeResultSet();
-
             if (rs.next()) {
-                return new Actividad(
+                Actividad actividad = new Actividad(
                     rs.getInt("actividad_id"),
                     rs.getString("Descripcion"),
                     rs.getDate("Fecha"),
@@ -61,28 +58,30 @@ public class ActividadDAOImpl implements ActividadDAO {
                     rs.getInt("cve_colonia"),
                     rs.getInt("usuario_registro_id")
                 );
+                return actividad;
             }
-
+            return null;
         } finally {
             conexion.closeConnection();
         }
-        return null;
     }
 
     @Override
     public Actividad update(Actividad actividad) throws SQLException {
+        Conexion conexion = new Conexion();
         try {
-            conexion.prepareCall("sp_UpdateActividad", 7);
-            conexion.comando.setInt(1, actividad.getIdActividad());
-            conexion.comando.setString(2, actividad.getDescripcionActivdad());
-            conexion.comando.setDate(3, new java.sql.Date(actividad.getFechaActividad().getTime()));
-            conexion.comando.setString(4, actividad.getEvidenciaURL());
-            conexion.comando.setString(5, "En Proceso"); // puedes cambiar el estado si lo manejas desde el modelo
-            conexion.comando.setInt(6, actividad.getIdCuadrilla());
-            conexion.comando.setInt(7, actividad.getIdColonia());
-
-            conexion.execute();
-            return actividad;
+            conexion.prepareCall("sp_UpdateActividad", 8); // 7 parámetros
+            conexion.comando.setInt(1, actividad.getActividad_id());
+            conexion.comando.setString(2, actividad.getDescripcion());
+            conexion.comando.setDate(3, new java.sql.Date(actividad.getFecha().getTime()));
+            conexion.comando.setString(4, actividad.getImagenEvidencia());
+            conexion.comando.setString(5, actividad.getEstado());
+            conexion.comando.setInt(6, actividad.getCuadrilla_id());
+            conexion.comando.setInt(7, actividad.getCve_colonia());
+            conexion.comando.setInt(8, actividad.getUsuario_registro_id()); // id del user que actualiza la actividad
+            
+            conexion.comando.executeUpdate();
+            return read(actividad.getActividad_id()); // Recuperar la actividad actualizada
         } finally {
             conexion.closeConnection();
         }

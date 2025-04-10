@@ -49,7 +49,7 @@ public class AuthDAOImpl implements AuthDAO{
     public void crearAdministrador(String nombre, String contrasena) throws SQLException {
         Conexion conn = new Conexion();
         try {
-            String call = "{call sp_CrearAdministrador(?,?)}";
+            String call = "{call sp_CrearAdmin(?,?)}";
             conn.comando = conn.cnx.prepareCall(call);
 
             conn.comando.setString(1, nombre);

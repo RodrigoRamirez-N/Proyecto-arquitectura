@@ -45,7 +45,7 @@ public class EmpleadoController {
         return true;
     }
 
-    public void crearEmpleado(String nombre, String password, String rol, String telefono) {
+    public int crearEmpleado(String nombre, String password, String rol, String telefono) {
         
         Empleado emp = new Empleado(0, nombre, password, rol, telefono);
         // el id se asigna automáticamente en la base de datos asi que se le asigna 0 al crear el objeto
@@ -53,10 +53,11 @@ public class EmpleadoController {
             throw new IllegalArgumentException("Los campos del empleado no son validos");
         }
         try {
-            empleadoDAO.create(emp);
+            return empleadoDAO.create(emp);
         } catch (SQLException e) { 
             e.printStackTrace();
         }
+        return -1; // Retorna null si hubo un error
     }
     
     public void leerEmpleado(int idEmpleado) {

@@ -69,7 +69,8 @@ CREATE PROCEDURE sp_UpdateActividad(
     IN p_imagenEvidencia LONGTEXT,
     IN p_estado ENUM('Pendiente', 'En Proceso', 'Finalizada'),
     IN p_cuadrilla_id INT,
-    IN p_cve_colonia INT
+    IN p_cve_colonia INT,
+    IN p_usuario_registro_id INT
 )
 BEGIN
     UPDATE Actividad
@@ -78,7 +79,8 @@ BEGIN
         imagenEvidencia = p_imagenEvidencia,
         estado = p_estado,
         cuadrilla_id = p_cuadrilla_id,
-        cve_colonia = p_cve_colonia
+        cve_colonia = p_cve_colonia,
+        usuario_registro_id = p_usuario_registro_id
     WHERE actividad_id = p_id;
 END//
 

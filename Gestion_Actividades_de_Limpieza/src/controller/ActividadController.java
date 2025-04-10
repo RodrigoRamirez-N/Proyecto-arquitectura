@@ -38,11 +38,12 @@ public class ActividadController {
     }
 
     // Actualizar una actividad
-    public Actividad updateActividad(int id, String descripcion, java.util.Date fecha, 
-            String evidenciaURL, String estado, int idCuadrilla, int idColonia) {
+    public Actividad updateActividad(int id, String descripcion, Date fecha, 
+            String evidenciaURL, String estado, int idCuadrilla, int idColonia, int idUsuario) {
         try {
-            Actividad actividad = new Actividad(id, descripcion, fecha, evidenciaURL, estado, idCuadrilla, idColonia, 0);
-            return actividadDAO.update(actividad);
+            Actividad actividad = new Actividad(id, descripcion, fecha, evidenciaURL, 
+                estado, idCuadrilla, idColonia, idUsuario);
+            return actividadDAO.update(actividad); // Retorna la actividad actualizada desde BD
         } catch (SQLException e) {
             System.err.println("Error al actualizar la actividad: " + e.getMessage());
         }

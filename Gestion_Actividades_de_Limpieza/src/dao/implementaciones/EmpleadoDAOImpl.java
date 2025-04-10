@@ -27,7 +27,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
             int resultId = conn.comando.getInt(4);
             if(resultId > 0) {
                 System.out.println("Empleado creado con ID: " + resultId);
-                return resultId;
+                return resultId; // Retorna el empleado creado
             } else {
                 System.err.println("(ifStmt)Error al crear empleado: ID no válido");
                 return -1;
@@ -52,7 +52,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
             conn.comando = conn.cnx.prepareCall(call);
             conn.comando.setInt(1, idEmpleado);
 
-            ResultSet rs = conn.comando.executeQuery();
+            ResultSet rs = conn.executeResultSet();
 
             if(rs.next()){
                 empleado = new Empleado(

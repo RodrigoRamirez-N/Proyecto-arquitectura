@@ -4,69 +4,58 @@ import java.util.Date;
 
 public class Actividad {
 
-    private int idActividad;
-    private String descripcionActivdad;
-    private Date fechaActividad;
-    private String evidenciaURL;
-    private String estado; // estado de la actividad (en proceso, finalizada, cancelada)
-    private int idCuadrilla; // fk cuadrilla
-    private int idColonia; // fk colonia
-    private int idUsuario; // fk usuario (jefe de cuadrilla)
+    private int actividad_id; 
+    private String descripcion; 
+    private Date fecha;
+    private String imagenEvidencia; 
+    private String estado;
+    private int cuadrilla_id; 
+    private int cve_colonia; 
+    private int usuario_registro_id; 
 
-    public Actividad(int idActividad, String descripcionActivdad, Date fechaActividad, String 
-            evidenciaURL, String estado, int idCuadrilla, int idColonia, int idUsuario) {
-        this.idActividad = idActividad;
-        this.descripcionActivdad = descripcionActivdad;
-        this.fechaActividad = fechaActividad;
-        this.evidenciaURL = evidenciaURL;
+
+    public Actividad(int actividad_id, String descripcion, Date fecha, String imagenEvidencia, 
+            String estado, int cuadrilla_id, int cve_colonia, int usuario_registro_id) {
+        this.actividad_id = actividad_id;
+        this.descripcion = descripcion;
+        this.fecha = fecha;
+        this.imagenEvidencia = imagenEvidencia;
         this.estado = estado;
-        this.idCuadrilla = idCuadrilla;
-        this.idColonia = idColonia;
-        this.idUsuario = idUsuario;
+        this.cuadrilla_id = cuadrilla_id;
+        this.cve_colonia = cve_colonia;
+        this.usuario_registro_id = usuario_registro_id;
     }
 
-    public int getIdActividad() {
-        return idActividad;
+    public int getActividad_id() {
+        return actividad_id;
     }
 
-    public void setIdActividad(int idActividad) {
-        this.idActividad = idActividad;
+    public void setActividad_id(int actividad_id) {
+        this.actividad_id = actividad_id;
     }
 
-    public String getDescripcionActivdad() {
-        return descripcionActivdad;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setDescripcionActivdad(String descripcionActivdad) {
-        this.descripcionActivdad = descripcionActivdad;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
-    public Date getFechaActividad() {
-        return fechaActividad;
+    public Date getFecha() {
+        return fecha;
     }
 
-    public void setFechaActividad(Date fechaActividad) {
-        this.fechaActividad = fechaActividad;
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
-    public String getEvidenciaURL() {
-        return evidenciaURL;
+    public String getImagenEvidencia() {
+        return imagenEvidencia;
     }
 
-    public void setEvidenciaURL(String evidenciaURL) {
-        this.evidenciaURL = evidenciaURL;
-    }
-
-    public int getIdCuadrilla() {
-        return idCuadrilla;
-    }
-
-    public void setIdCuadrilla(int idCuadrilla) {
-        this.idCuadrilla = idCuadrilla;
-    }
-
-    public int getIdColonia() {
-        return idColonia;
+    public void setImagenEvidencia(String imagenEvidencia) {
+        this.imagenEvidencia = imagenEvidencia;
     }
 
     public String getEstado() {
@@ -77,23 +66,42 @@ public class Actividad {
         this.estado = estado;
     }
 
-    public void setIdColonia(int idColonia) {
-        this.idColonia = idColonia;
+    public int getCuadrilla_id() {
+        return cuadrilla_id;
     }
 
-    public int getIdUsuario() {
-        return idUsuario;
+    public void setCuadrilla_id(int cuadrilla_id) {
+        this.cuadrilla_id = cuadrilla_id;
     }
 
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    public int getCve_colonia() {
+        return cve_colonia;
     }
-    
+
+    public void setCve_colonia(int cve_colonia) {
+        this.cve_colonia = cve_colonia;
+    }
+
+    public int getUsuario_registro_id() {
+        return usuario_registro_id;
+    }
+
+    public void setUsuario_registro_id(int usuario_registro_id) {
+        this.usuario_registro_id = usuario_registro_id;
+    }
+
     @Override
     public String toString() {
-        return "Actividad [idActividad=" + idActividad + ", descripcionActivdad=" + descripcionActivdad
-                + ", fechaActividad=" + fechaActividad + ", evidenciaURL=" + evidenciaURL + ", estado=" + estado
-                + ", idCuadrilla=" + idCuadrilla + ", idColonia=" + idColonia + ", idUsuario=" + idUsuario + "]";
+        return "Actividad{" +
+                "actividad_id=" + actividad_id +
+                ", descripcion='" + descripcion + '\'' +
+                ", fecha=" + fecha +
+                ", imagenEvidencia='" + imagenEvidencia + '\'' +
+                ", estado='" + estado + '\'' +
+                ", cuadrilla_id=" + cuadrilla_id +
+                ", cve_colonia=" + cve_colonia +
+                ", usuario_registro_id=" + usuario_registro_id +
+                '}';
     }
 
 }

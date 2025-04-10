@@ -11,6 +11,7 @@ DROP PROCEDURE IF EXISTS sp_CrearAdmin;
 DROP PROCEDURE IF EXISTS sp_EliminarAdministrador;
 DROP PROCEDURE IF EXISTS sp_ActualizarAdministrador;
 DROP PROCEDURE IF EXISTS sp_CambiarContrasena;
+DROP PROCEDURE IF EXISTS sp_ObtenerAdministradores;
 
 CREATE PROCEDURE sp_ObtenerAdministradores()
 BEGIN
@@ -110,7 +111,7 @@ CREATE PROCEDURE sp_AutenticarUsuario(
 BEGIN
     DECLARE v_id INT;
 
-    SELECT id INTO v_id
+    SELECT usuario_id INTO v_id
     FROM Usuario
     WHERE Nombre = p_Nombre 
     AND Contrasenia = p_Contrasenia;
