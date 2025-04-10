@@ -1,16 +1,19 @@
 USE GestionLimpieza;
+
+DROP PROCEDURE IF EXISTS sp_CreateColonia;
+DROP PROCEDURE IF EXISTS sp_GetColoniaById;
+DROP PROCEDURE IF EXISTS sp_UpdateColonia;
+DROP PROCEDURE IF EXISTS sp_DeleteColonia;
+DROP PROCEDURE IF EXISTS sp_GetAllColonias;
+
 DELIMITER //
 
 CREATE PROCEDURE sp_CreateColonia(
-    IN p_cve_colonia INT,
-    IN p_NombreColonia VARCHAR(255),
-    OUT p_resultado INT
+    IN p_NombreColonia VARCHAR(255)
 )
 BEGIN
-    INSERT INTO Colonia(cve_colonia, NombreColonia)
-    VALUES (p_cve_colonia, p_NombreColonia);
-    
-    SET p_resultado = p_cve_colonia;
+    INSERT INTO Colonia(NombreColonia)
+    VALUES (p_NombreColonia);
 END//
 
 CREATE PROCEDURE sp_GetColoniaById(
@@ -40,14 +43,6 @@ END//
 CREATE PROCEDURE sp_GetAllColonias()
 BEGIN
     SELECT * FROM Colonia ORDER BY NombreColonia;
-END//
-
-CREATE PROCEDURE sp_GetColoniasByNombre(
-    IN p_nombre VARCHAR(255)
-)
-BEGIN
-    SELECT * FROM Colonia 
-    WHERE NombreColonia LIKE CONCAT('%', p_nombre, '%');
 END//
 
 DELIMITER ;

@@ -1,9 +1,5 @@
 CREATE DATABASE GestionLimpieza;
 
--- CALL sp_AsignarEmpleadoACuadrilla(3, 2);
--- CALL sp_RemoverEmpleadoDeCuadrilla(3, 2);
--- CALL sp_ObtenerEmpleadosPorCuadrilla(1);
-
 USE GestionLimpieza;
 CALL sp_CreateEmpleado('Pepin', 'Password123', '1234567890', @empleado_id);
 CALL sp_CreateEmpleado('Tacochino', 'Contraseña', '8441405182', @empleado_id);
@@ -44,7 +40,11 @@ CALL sp_ObtenerEmpleadosPorCuadrilla(1);
 USE GestionLimpieza;
 SELECT * FROM Empleado_Cuadrilla WHERE cuadrilla_id = 1;
 
---obtiene primero el id del jefe de la cuadrilla
+--obtiene primero el id del jefe de la cuadrilla luego el id de la cuadrilla
 USE GestionLimpieza;
 CALL sp_AsignarJefeACuadrilla(4, 1);
 CALL sp_GetCuadrillaById(1);
+
+-- poblada la tabla colonia
+USE GestionLimpieza;
+SELECT * FROM Colonia;

@@ -5,42 +5,38 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import java.sql.CallableStatement;
 import java.sql.SQLException;
-import util.Conexion;
 
 public class ExcelToMySQL {
     public static void main(String[] args) {
         Conexion conexion = new Conexion();
 
-        try (FileInputStream fis = new FileInputStream(excelFilePath);
-             Workbook workbook = new XSSFWorkbook(fis))
-             {
+        try (FileInputStream fis = new FileInputStream("Gestion_Actividades_de_Limpieza\\src\\util\\Colonias.xlsx");
+             Workbook workbook = new XSSFWorkbook(fis)) {
 
             Sheet sheet = workbook.getSheetAt(0);
-            String sql = "INSERT INTO tu_tabla (columna1, columna2, columna3) VALUES (?, ?, ?)";
-            PreparedStatement statement = ((Connection) conexion).prepareStatement(sql);
+            String call = "{CALL sp_CreateColonia(?)}";
 
             for (Row row : sheet) {
-                if (row.getRowNum() == 0) { // Saltar la fila de encabezado
-                    continue;
+
+                Cell cell = row.getCell(0);
+                if (cell != null && cell.getCellType() == CellType.STRING) {
+                    String nombreColonia = cell.getStringCellValue().trim();
+
+                    try (CallableStatement statement = conexion.cnx.prepareCall(call)) {
+                        statement.setString(1, nombreColonia);
+                        statement.execute();
+                    } catch (SQLException e) {
+                        System.err.println("Error al insertar: " + nombreColonia);
+                        e.printStackTrace();
+                    }
                 }
-
-                String columna1 = row.getCell(0).getStringCellValue();
-                double columna2 = row.getCell(1).getNumericCellValue();
-
-                statement.setString(1, columna1);
-                statement.setDouble(2, columna2);
-
-                statement.addBatch();
             }
 
-            statement.executeBatch();
             System.out.println("Datos importados exitosamente.");
 
-        } catch (IOException | SQLException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

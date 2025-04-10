@@ -6,7 +6,7 @@ public class Conexion {
     
     private String host="localhost";
     private String port= "3306";
-    private String database= "limpieza"; //nombre de la base de datos
+    private String database= "gestionlimpieza"; //nombre de la base de datos
     private String username = "root";
     private String password = "rootpsw";
 

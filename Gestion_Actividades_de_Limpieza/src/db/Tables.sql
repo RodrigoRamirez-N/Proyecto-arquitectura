@@ -47,7 +47,7 @@ CREATE TABLE Empleado (
 );
 
 CREATE TABLE Colonia (
-    cve_colonia INT PRIMARY KEY, 
+    cve_colonia INT PRIMARY KEY AUTO_INCREMENT, 
     NombreColonia VARCHAR(255) NOT NULL 
 ) ;
 
