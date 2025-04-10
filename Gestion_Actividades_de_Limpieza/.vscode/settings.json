@@ -1,6 +1,21 @@
 {
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "c:\\Users\\rodry\\Downloads\\mysql-connector-j-8.0.32 1.jar"
+        "c:\\Users\\rodry\\Downloads\\mysql-connector-j-8.0.32 1.jar",
+        "c:\\Users\\rodry\\Downloads\\AbsoluteLayout.jar",
+        "c:\\Users\\rodry\\Downloads\\log4j-core-2.14.1.jar",
+        "d:\\Descargas\\jars necesarios POI\\commons-codec-1.15.jar",
+        "d:\\Descargas\\jars necesarios POI\\commons-collections4-4.4.jar",
+        "d:\\Descargas\\jars necesarios POI\\commons-compress-1.21.jar",
+        "d:\\Descargas\\jars necesarios POI\\commons-io-2.11.0.jar",
+        "d:\\Descargas\\jars necesarios POI\\commons-math3-3.6.1.jar",
+        "d:\\Descargas\\jars necesarios POI\\curvesapi-1.06.jar",
+        "d:\\Descargas\\jars necesarios POI\\log4j-api-2.14.1.jar",
+        "d:\\Descargas\\jars necesarios POI\\poi-5.1.0.jar",
+        "d:\\Descargas\\jars necesarios POI\\poi-ooxml-5.1.0.jar",
+        "d:\\Descargas\\jars necesarios POI\\poi-ooxml-lite-5.1.0.jar",
+        "d:\\Descargas\\jars necesarios POI\\SparseBitSet-1.2.jar",
+        "d:\\Descargas\\jars necesarios POI\\xml-apis-1.4.01.jar",
+        "d:\\Descargas\\jars necesarios POI\\xmlbeans-5.0.2.jar"
     ]
 }

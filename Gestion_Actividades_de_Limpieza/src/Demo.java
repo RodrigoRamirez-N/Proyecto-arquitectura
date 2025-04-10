@@ -35,7 +35,7 @@ public class Demo {
         System.out.println("Fecha creación cuadrilla: " + cuadrilla.getFechaCreacionCuadrilla() + "\n");
 
         // 5. EmpleadoController Demo (requiere inyección de DAO)
-        EmpleadoDAO empleadoDAO = new EmpleadoDAOImpl(); // Asume implementación existente
+        EmpleadoDAO empleadoDAO = new EmpleadoDAOImpl(); 
         EmpleadoController empleadoController = new EmpleadoController(empleadoDAO);
         System.out.println("=== Empleados ===");
         int idEmpleado = empleadoController.crearEmpleado("Pedro Gómez", "pedro456", "limpieza", "555-5678");
