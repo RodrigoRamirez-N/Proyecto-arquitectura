@@ -2,7 +2,6 @@ package controller;
 
 import dao.implementaciones.AuthDAOImpl;
 import dao.interfaces.AuthDAO;
-import model.Usuario;
 
 import java.sql.SQLException;
 
@@ -61,10 +60,4 @@ public class AuthController {
         }
     }
 
-    // Método para mostrar los detalles del usuario autenticado
-    public Usuario obtenerUsuario(int idUsuario) {
-        // Aquí podrías agregar el método de obtener detalles del usuario
-        // usando la lógica que quieras
-        return null; // Es solo un ejemplo, implementa según tu necesidad
-    }
 }

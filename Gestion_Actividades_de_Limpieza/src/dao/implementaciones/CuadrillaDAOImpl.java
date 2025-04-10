@@ -22,7 +22,8 @@ public class CuadrillaDAOImpl implements CuadrillaDAO {
 
             int nuevoId = conexion.comando.getInt(3);
             cuadrilla.setIdCuadrilla(nuevoId);
-            return cuadrilla;
+            // recuperar la cuadrilla creada para obtener la fecha creada por la bd en el sp
+            return readCuadrilla(nuevoId);
         } catch (SQLException e) {
             System.err.println("Error al crear cuadrilla: " + e.getMessage());
         } finally {
@@ -54,7 +55,7 @@ public class CuadrillaDAOImpl implements CuadrillaDAO {
         }
         return cuadrilla;
     }
-
+    
     @Override
     public Cuadrilla updateCuadrilla(Cuadrilla cuadrilla) {
         Conexion conexion = new Conexion();
@@ -63,14 +64,20 @@ public class CuadrillaDAOImpl implements CuadrillaDAO {
             conexion.comando.setInt(1, cuadrilla.getIdCuadrilla());
             conexion.comando.setString(2, cuadrilla.getNombreCuadrilla());
             conexion.comando.setInt(3, cuadrilla.getIdJefeCuadrilla());
-            conexion.comando.execute();
-            return cuadrilla;
+            int filasAfectadas = conexion.comando.executeUpdate(); // Ejecutar y obtener filas afectadas
+            
+            if (filasAfectadas == 0) {
+                throw new SQLException("Actualización fallida: ID no encontrado.");
+            }
+            
+            // Recuperar la cuadrilla actualizada desde la BD
+            return readCuadrilla(cuadrilla.getIdCuadrilla()); 
         } catch (SQLException e) {
             System.err.println("Error al actualizar cuadrilla: " + e.getMessage());
+            return null;
         } finally {
             conexion.closeConnection();
         }
-        return null;
     }
 
     @Override

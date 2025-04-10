@@ -9,7 +9,7 @@ CREATE PROCEDURE sp_CreateCuadrilla(
 )
 BEGIN
     INSERT INTO Cuadrilla(NombreCuadrilla, jefe_id, Fecha)
-    VALUES (p_NombreCuadrilla, p_jefe_id, CURDATE());
+    VALUES (p_NombreCuadrilla, p_jefe_id, CURDATE()); --func inserta fecha actual
     
     SET p_cuadrilla_id = LAST_INSERT_ID();
 END//
