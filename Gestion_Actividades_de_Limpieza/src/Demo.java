@@ -26,21 +26,44 @@ public class Demo {
         System.out.println("=== Jefes ===");
         int idJefe = jefeController.crearJefe("Juan Pérez", "juan123", "555-1234");
         System.out.println("Jefe creado ID: " + idJefe + "\n");
-
+        System.out.println("Detalles jefe: " + jefeController.obtenerJefe(idJefe) + "\n");
+        
         // 4. CuadrillaController Demo
         CuadrillaController cuadrillaController = new CuadrillaController();
         System.out.println("=== Cuadrillas ===");
         Cuadrilla cuadrilla = cuadrillaController.crearCuadrilla("Cuadrilla Alpha", idJefe);
         System.out.println("Cuadrilla creada: " + cuadrilla.getIdCuadrilla());
         System.out.println("Fecha creación cuadrilla: " + cuadrilla.getFechaCreacionCuadrilla() + "\n");
+        
+        // Asignar jefe a cuadrilla
+        System.out.println("=== Asignación de Jefe a Cuadrilla ===");
+        jefeController.asignarJefeACuadrilla(idJefe, cuadrilla.getIdCuadrilla());
 
+        System.out.println("Detalles cuadrilla: " + cuadrillaController.obtenerCuadrillaPorId(cuadrilla.getIdCuadrilla()) + "\n");
+        
         // 5. EmpleadoController Demo (requiere inyección de DAO)
         EmpleadoDAO empleadoDAO = new EmpleadoDAOImpl(); 
         EmpleadoController empleadoController = new EmpleadoController(empleadoDAO);
+
         System.out.println("=== Empleados ===");
-        int idEmpleado = empleadoController.crearEmpleado("Pedro Gómez", "pedro456", "limpieza", "555-5678");
+        int idEmpleado = empleadoController.crearEmpleado("Pedro PRIMERO", "1", "limpieza", "555-5678");
+
         empleadoController.asignarEmpleadoACuadrilla(idEmpleado, cuadrilla.getIdCuadrilla());
         System.out.println("Empleado asignado a cuadrilla\n");
+
+        int idEmpleado2 = empleadoController.crearEmpleado("Pedro SEGUNDO", "2", "limpieza", "555-5678");
+
+        empleadoController.asignarEmpleadoACuadrilla(idEmpleado2, cuadrilla.getIdCuadrilla());
+        System.out.println("Empleado asignado a cuadrilla\n");
+
+        int idEmpleado3 = empleadoController.crearEmpleado("Pedro TERCERO", "3", "limpieza", "555-5678");
+
+        empleadoController.asignarEmpleadoACuadrilla(idEmpleado3, cuadrilla.getIdCuadrilla());
+        System.out.println("Empleado asignado a cuadrilla\n");
+
+        empleadoController.getEmpleadosByCuadrilla(cuadrilla.getIdCuadrilla()).forEach(empleado -> {
+            System.out.println("Empleado ID: " + empleado.getId() + ", Nombre: " + empleado.getNombre() + ", Cuadrilla ID: " + cuadrilla.getIdCuadrilla());
+        });
 
         // 6. ActividadController Demo
         ActividadController actividadController = new ActividadController();
@@ -72,10 +95,29 @@ public class Demo {
             idJefe
         );
 
+        System.out.println("=== Actividades ===");
+        Actividad actividad2 = actividadController.createActividad(
+            "Limpieza de parque", 
+            new Date(), 
+            "http://evidencia.com/1", 
+            "Pendiente", 
+            cuadrilla.getIdCuadrilla(), 
+            idColonia, 
+            idJefe
+        );
+        System.out.println("Actividad creada ID: " + actividad2.getActividad_id());
+        System.out.println("Estado actividad: " + actividad2.getEstado() + "\n");
+        System.out.println("Detalles actividad: " + actividadController.getActividadById(actividad2.getActividad_id()) + "\n");
+
         if (actividadActualizada != null) {
             System.out.println("Estado actualizado: " + actividadActualizada.getEstado());
         } else {
             System.out.println("Error: La actividad no se pudo actualizar.");
         }
+
+        actividadController.getActividadesByCuadrilla(cuadrilla.getIdCuadrilla()).forEach(actividadItem -> {
+            System.out.println("Actividad ID: " + actividadItem.getActividad_id() + ", Estado: " + actividadItem.getEstado() + ", Cuadrilla ID: " + cuadrilla.getIdCuadrilla());
+        });
+
     }
 }

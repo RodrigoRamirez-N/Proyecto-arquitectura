@@ -62,7 +62,7 @@ CREATE PROCEDURE sp_ObtenerEmpleadosPorCuadrilla (
 BEGIN
     -- Validar existencia de la cuadrilla
     IF NOT EXISTS (
-        SELECT 1 FROM Cuadrilla WHERE cuadrilla_id = p_cuadrilla_id
+        SELECT * FROM Cuadrilla WHERE cuadrilla_id = p_cuadrilla_id
     ) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'La cuadrilla no existe';
@@ -73,7 +73,8 @@ BEGIN
         c.cuadrilla_id,
         c.NombreCuadrilla,
         jefe.Nombre AS NombreJefe,
-        u.usuario_id AS EmpleadoID,
+        u.usuario_id AS empleado_id,
+        u.Contrasenia AS contrasena,
         u.Nombre AS NombreEmpleado,
         u.rol,
         e.telefono

@@ -231,7 +231,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
             while(rs.next()) {
                 Empleado empleado = new Empleado(
                     rs.getInt("empleado_id"),
-                    rs.getString("nombre"),
+                    rs.getString("NombreEmpleado"),
                     Integer.toString(rs.getString("contrasena").hashCode()),
                     rs.getString("rol"),
                     rs.getString("telefono")
