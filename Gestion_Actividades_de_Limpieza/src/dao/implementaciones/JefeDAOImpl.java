@@ -56,9 +56,9 @@ public class JefeDAOImpl implements JefeDAO {
 
             if(rs.next()){
                 jefe = new Jefe(
-                    rs.getInt("jefe_cuadrilla_id"),
+                    rs.getInt("usuario_id"),
                     rs.getString("nombre"),
-                    Integer.toString(rs.getString("contrasena").hashCode()),
+                    Integer.toString(rs.getString("Contrasenia").hashCode()),
                     rs.getString("rol"),
                     rs.getString("telefono")
                 ); 
@@ -145,7 +145,7 @@ public class JefeDAOImpl implements JefeDAO {
 
             while(rs.next()) {
                 Jefe jefe = new Jefe(
-                    rs.getInt("jefe_cuadrilla_id"),
+                    rs.getInt("usuario_id"),
                     rs.getString("nombre"),
                     Integer.toString(rs.getString("contrasena").hashCode()),
                     rs.getString("rol"),

@@ -41,25 +41,26 @@ public class Demo {
 
         System.out.println("Detalles cuadrilla: " + cuadrillaController.obtenerCuadrillaPorId(cuadrilla.getIdCuadrilla()) + "\n");
         
-        // 5. EmpleadoController Demo (requiere inyección de DAO)
+        // 5. EmpleadoController Demo
         EmpleadoDAO empleadoDAO = new EmpleadoDAOImpl(); 
         EmpleadoController empleadoController = new EmpleadoController(empleadoDAO);
 
         System.out.println("=== Empleados ===");
+        // primer empleado
         int idEmpleado = empleadoController.crearEmpleado("Pedro PRIMERO", "1", "limpieza", "555-5678");
 
         empleadoController.asignarEmpleadoACuadrilla(idEmpleado, cuadrilla.getIdCuadrilla());
-        System.out.println("Empleado asignado a cuadrilla\n");
-
+        System.out.println("Empleado asignado a cuadrilla " + cuadrilla.getIdCuadrilla() + "\n");
+        // segundo empleado
         int idEmpleado2 = empleadoController.crearEmpleado("Pedro SEGUNDO", "2", "limpieza", "555-5678");
 
         empleadoController.asignarEmpleadoACuadrilla(idEmpleado2, cuadrilla.getIdCuadrilla());
-        System.out.println("Empleado asignado a cuadrilla\n");
-
+        System.out.println("Empleado asignado a cuadrilla" + cuadrilla.getIdCuadrilla() + "\n");
+        // tercer empleado
         int idEmpleado3 = empleadoController.crearEmpleado("Pedro TERCERO", "3", "limpieza", "555-5678");
 
         empleadoController.asignarEmpleadoACuadrilla(idEmpleado3, cuadrilla.getIdCuadrilla());
-        System.out.println("Empleado asignado a cuadrilla\n");
+        System.out.println("Empleado asignado a cuadrilla" + cuadrilla.getIdCuadrilla() + "\n");
 
         empleadoController.getEmpleadosByCuadrilla(cuadrilla.getIdCuadrilla()).forEach(empleado -> {
             System.out.println("Empleado ID: " + empleado.getId() + ", Nombre: " + empleado.getNombre() + ", Cuadrilla ID: " + cuadrilla.getIdCuadrilla());
