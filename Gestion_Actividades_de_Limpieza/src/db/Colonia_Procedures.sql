@@ -5,6 +5,7 @@ DROP PROCEDURE IF EXISTS sp_GetColoniaById;
 DROP PROCEDURE IF EXISTS sp_UpdateColonia;
 DROP PROCEDURE IF EXISTS sp_DeleteColonia;
 DROP PROCEDURE IF EXISTS sp_GetAllColonias;
+DROP PROCEDURE IF EXISTS sp_GetColoniasPorTipoActividad;
 
 DELIMITER //
 
@@ -47,5 +48,16 @@ CREATE PROCEDURE sp_GetAllColonias()
 BEGIN
     SELECT * FROM Colonia ORDER BY NombreColonia;
 END//
+
+-- Esta consulta obtiene las colonias que tienen actividades de un tipo específico sin repetirlas.
+CREATE PROCEDURE sp_GetColoniasPorTipoActividad(
+    IN p_tipoActividad VARCHAR(50)
+)
+BEGIN
+    SELECT DISTINCT c.cve_colonia, c.NombreColonia
+    FROM Actividad a
+    JOIN Colonia c ON a.cve_colonia = c.cve_colonia
+    WHERE a.tipoActividad = p_tipoActividad;
+END //
 
 DELIMITER ;

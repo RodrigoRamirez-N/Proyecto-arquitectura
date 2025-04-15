@@ -5,7 +5,8 @@ import java.util.Date;
 public class Actividad {
 
     private int actividad_id; 
-    private String descripcion; 
+    private String detalles;
+    private String tipoActividad;
     private Date fecha;
     private String imagenEvidencia; 
     private String estado;
@@ -13,11 +14,11 @@ public class Actividad {
     private int cve_colonia; 
     private int usuario_registro_id; 
 
-
-    public Actividad(int actividad_id, String descripcion, Date fecha, String imagenEvidencia, 
+    public Actividad(int actividad_id, String detalles, String tipoActividad, Date fecha, String imagenEvidencia, 
             String estado, int cuadrilla_id, int cve_colonia, int usuario_registro_id) {
         this.actividad_id = actividad_id;
-        this.descripcion = descripcion;
+        this.detalles = detalles;
+        this.tipoActividad = tipoActividad;
         this.fecha = fecha;
         this.imagenEvidencia = imagenEvidencia;
         this.estado = estado;
@@ -30,16 +31,24 @@ public class Actividad {
         return actividad_id;
     }
 
+    public String getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(String detalles) {
+        this.detalles = detalles;
+    }
+
+    public String getTipoActividad() {
+        return tipoActividad;
+    }
+
+    public void setTipoActividad(String tipoActividad) {
+        this.tipoActividad = tipoActividad;
+    }
+
     public void setActividad_id(int actividad_id) {
         this.actividad_id = actividad_id;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
     }
 
     public Date getFecha() {
@@ -94,7 +103,8 @@ public class Actividad {
     public String toString() {
         return "Actividad{" +
                 "actividad_id=" + actividad_id +
-                ", descripcion='" + descripcion + '\'' +
+                ", tipoActividad='" + tipoActividad + '\'' +
+                ", detalles='" + detalles + '\'' +
                 ", fecha=" + fecha +
                 ", imagenEvidencia='" + imagenEvidencia + '\'' +
                 ", estado='" + estado + '\'' +

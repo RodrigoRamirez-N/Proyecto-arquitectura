@@ -11,18 +11,36 @@ DROP PROCEDURE IF EXISTS sp_SubirEvidencia//
 DROP PROCEDURE IF EXISTS sp_GetActividadesByCuadrilla//
 DROP PROCEDURE IF EXISTS sp_GetActividadesByFecha//
 
-CREATE PROCEDURE sp_DeleteActividad(
-    IN p_actividad_id INT
+CREATE PROCEDURE sp_UpdateActividad(
+    IN p_id INT,
+    IN p_detalles LONGTEXT,
+    IN p_tipoActividad VARCHAR(50),
+    IN p_Fecha DATE,
+    IN p_imagenEvidencia LONGTEXT,
+    IN p_estado VARCHAR(20),
+    IN p_cuadrilla_id INT,
+    IN p_cve_colonia INT,
+    IN p_usuario_registro_id INT
 )
 BEGIN
-    DELETE FROM Actividad WHERE actividad_id = p_actividad_id;
+    UPDATE Actividad
+    SET Fecha = p_Fecha,
+        imagenEvidencia = p_imagenEvidencia,
+        estado = p_estado,
+        cuadrilla_id = p_cuadrilla_id,
+        cve_colonia = p_cve_colonia,
+        usuario_registro_id = p_usuario_registro_id,
+        detalles = p_detalles,
+        tipoActividad = p_tipoActividad
+    WHERE actividad_id = p_id;
 END//
 
 CREATE PROCEDURE sp_CreateActividad(
-    IN p_Descripcion VARCHAR(1000),
+    IN p_detalles LONGTEXT,
+    IN p_tipoActividad VARCHAR(50),
     IN p_Fecha DATE,
+    IN p_estado VARCHAR(20),
     IN p_imagenEvidencia LONGTEXT,
-    IN p_estado ENUM('Pendiente', 'En Proceso', 'Finalizada'),
     IN p_cuadrilla_id INT,
     IN p_cve_colonia INT,
     IN p_usuario_registro_id INT,
@@ -30,7 +48,8 @@ CREATE PROCEDURE sp_CreateActividad(
 )
 BEGIN
     INSERT INTO Actividad(
-        Descripcion, 
+        detalles,
+        tipoActividad,
         Fecha, 
         imagenEvidencia, 
         estado, 
@@ -39,7 +58,8 @@ BEGIN
         usuario_registro_id
     )
     VALUES (
-        p_Descripcion,
+        p_detalles,
+        p_tipoActividad,
         p_Fecha,
         p_imagenEvidencia,
         p_estado,
@@ -51,6 +71,13 @@ BEGIN
     SET p_actividad_id = LAST_INSERT_ID();
 END//
 
+CREATE PROCEDURE sp_DeleteActividad(
+    IN p_id INT
+)
+BEGIN
+    DELETE FROM Actividad WHERE actividad_id = p_id;
+END//
+
 CREATE PROCEDURE sp_GetActividadById(
     IN p_id INT
 )
@@ -60,28 +87,6 @@ BEGIN
     LEFT JOIN Colonia c ON a.cve_colonia = c.cve_colonia
     LEFT JOIN Cuadrilla cu ON a.cuadrilla_id = cu.cuadrilla_id
     WHERE a.actividad_id = p_id;
-END//
-
-CREATE PROCEDURE sp_UpdateActividad(
-    IN p_id INT,
-    IN p_Descripcion VARCHAR(1000),
-    IN p_Fecha DATE,
-    IN p_imagenEvidencia LONGTEXT,
-    IN p_estado ENUM('Pendiente', 'En Proceso', 'Finalizada'),
-    IN p_cuadrilla_id INT,
-    IN p_cve_colonia INT,
-    IN p_usuario_registro_id INT
-)
-BEGIN
-    UPDATE Actividad
-    SET Descripcion = p_Descripcion,
-        Fecha = p_Fecha,
-        imagenEvidencia = p_imagenEvidencia,
-        estado = p_estado,
-        cuadrilla_id = p_cuadrilla_id,
-        cve_colonia = p_cve_colonia,
-        usuario_registro_id = p_usuario_registro_id
-    WHERE actividad_id = p_id;
 END//
 
 CREATE PROCEDURE sp_GetAllActividades()

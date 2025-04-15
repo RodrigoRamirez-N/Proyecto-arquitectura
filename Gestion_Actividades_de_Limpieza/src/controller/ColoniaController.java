@@ -65,4 +65,8 @@ public class ColoniaController {
             return null;
         }
     }
+
+    public List<Colonia> getColoniasPorTipoActividad(String tipoActividad){
+        return coloniaDAO.getColoniasPorTipoActividad(tipoActividad);
+    }
 }

@@ -4,15 +4,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.implementaciones.EmpleadoDAOImpl;
 import dao.interfaces.EmpleadoDAO;
 import model.Empleado;
 
 public class EmpleadoController {
 
-    private final EmpleadoDAO empleadoDAO;
+    private EmpleadoDAO empleadoDAO;
 
-    public EmpleadoController(EmpleadoDAO empleadoDAO) {
-        this.empleadoDAO = empleadoDAO;
+    public EmpleadoController() {
+        this.empleadoDAO = new EmpleadoDAOImpl();
     }
 
     // Aquí puedes implementar los métodos para manejar la lógica de negocio relacionada con los empleados

@@ -1,7 +1,5 @@
 import java.util.Date;
 import controller.*;
-import dao.implementaciones.*;
-import dao.interfaces.*;
 import model.*;
 
 public class Demo {
@@ -41,9 +39,8 @@ public class Demo {
 
         System.out.println("Detalles cuadrilla: " + cuadrillaController.obtenerCuadrillaPorId(cuadrilla.getIdCuadrilla()) + "\n");
         
-        // 5. EmpleadoController Demo
-        EmpleadoDAO empleadoDAO = new EmpleadoDAOImpl(); 
-        EmpleadoController empleadoController = new EmpleadoController(empleadoDAO);
+        // 5. EmpleadoController Demo 
+        EmpleadoController empleadoController = new EmpleadoController();
 
         System.out.println("=== Empleados ===");
         // primer empleado
@@ -70,7 +67,8 @@ public class Demo {
         ActividadController actividadController = new ActividadController();
         System.out.println("=== Actividades ===");
         Actividad actividad = actividadController.createActividad(
-            "Limpieza de parque", 
+            "Limpieza de parque en la colonia Las Flores de café tacvba. Se realizaron tareas de recolección de basura y mantenimiento de áreas verdes.",
+            "Limpieza parques",
             new Date(), 
             "http://evidencia.com/1", 
             "Pendiente", 
@@ -87,18 +85,26 @@ public class Demo {
         
         Actividad actividadActualizada = actividadController.updateActividad(
             actividad.getActividad_id(), 
-            "Limpieza de parque", 
+            "Limpieza en el parque de la colonia Las Flores de café tacvba. Se realizaron tareas de recolección de basura y mantenimiento de áreas verdes. aqui se hizo un cambio de estado y se actualizaron los detalles.", 
+            "Limpieza parques",
             new Date(), 
             "http://evidencia.com/1-completado", 
-            "En proceso", 
+            "Finalizada", 
             cuadrilla.getIdCuadrilla(), 
             idColonia,
             idJefe
         );
+        
+        if (actividadActualizada != null) {
+            System.out.println("Estado actualizado: " + actividadActualizada.getEstado());
+        } else {
+            System.out.println("Error: La actividad no se pudo actualizar.");
+        }
 
         System.out.println("=== Actividades ===");
         Actividad actividad2 = actividadController.createActividad(
-            "Limpieza de parque", 
+            "Se realizarán tareas de recolección de basura en la colonia Las Flores de café tacvba y se retirarán escombros.", 
+            "Recoleccion de basura",
             new Date(), 
             "http://evidencia.com/1", 
             "Pendiente", 
@@ -110,11 +116,6 @@ public class Demo {
         System.out.println("Estado actividad: " + actividad2.getEstado() + "\n");
         System.out.println("Detalles actividad: " + actividadController.getActividadById(actividad2.getActividad_id()) + "\n");
 
-        if (actividadActualizada != null) {
-            System.out.println("Estado actualizado: " + actividadActualizada.getEstado());
-        } else {
-            System.out.println("Error: La actividad no se pudo actualizar.");
-        }
 
         actividadController.getActividadesByCuadrilla(cuadrilla.getIdCuadrilla()).forEach(actividadItem -> {
             System.out.println("Actividad ID: " + actividadItem.getActividad_id() + ", Estado: " + actividadItem.getEstado() + ", Cuadrilla ID: " + cuadrilla.getIdCuadrilla());

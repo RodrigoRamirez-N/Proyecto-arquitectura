@@ -144,4 +144,33 @@ public class ColoniaDAOImpl implements ColoniaDAO{
 
 	}
 
+    @Override
+    public List<Colonia> getColoniasPorTipoActividad(String tipoActividad) {
+        Conexion conn = new Conexion();
+        List<Colonia> colonias = new ArrayList<>();
+
+        try {
+            String call = "{call sp_GetColoniasPorTipoActividad(?)}";
+            conn.comando = conn.cnx.prepareCall(call);
+            conn.comando.setString(1, tipoActividad);
+
+            ResultSet rs = conn.comando.executeQuery();
+
+            while (rs.next()) {
+                Colonia colonia = new Colonia(
+                    rs.getInt("cve_colonia"),
+                    rs.getString("NombreColonia")
+                );
+                colonias.add(colonia);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener colonias por tipo de actividad: ");
+            e.printStackTrace();
+        } finally {
+            conn.closeConnection();
+        }
+        return colonias;
+    }
+
 }

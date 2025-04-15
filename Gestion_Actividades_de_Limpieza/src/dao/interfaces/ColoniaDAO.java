@@ -14,5 +14,6 @@ public interface ColoniaDAO {
 
     // Consultas concretas
     List<Colonia> getAll(); // listar todas las colonias
+    List<Colonia> getColoniasPorTipoActividad(String tipoActividad); // listar colonias por tipo de actividad
 
 }

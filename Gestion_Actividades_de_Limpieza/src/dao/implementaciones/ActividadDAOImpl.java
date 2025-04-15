@@ -20,19 +20,20 @@ public class ActividadDAOImpl implements ActividadDAO {
     public Actividad create(Actividad actividad) throws SQLException {
         Conexion conexion = new Conexion();
         try {
-            conexion.prepareCall("sp_CreateActividad", 8); // 7 IN + 1 OUT = 8 parámetros
-            conexion.comando.setString(1, actividad.getDescripcion());
-            conexion.comando.setDate(2, new java.sql.Date(actividad.getFecha().getTime()));
-            conexion.comando.setString(3, actividad.getImagenEvidencia());
+            conexion.prepareCall("sp_CreateActividad", 9);
+            conexion.comando.setString(1, actividad.getDetalles());
+            conexion.comando.setString(2, actividad.getTipoActividad());
+            conexion.comando.setDate(3, new java.sql.Date(actividad.getFecha().getTime()));
             conexion.comando.setString(4, actividad.getEstado());
-            conexion.comando.setInt(5, actividad.getCuadrilla_id());
-            conexion.comando.setInt(6, actividad.getCve_colonia());
-            conexion.comando.setInt(7, actividad.getUsuario_registro_id()); // id del user que registra la actividad
+            conexion.comando.setString(5, actividad.getImagenEvidencia());
+            conexion.comando.setInt(6, actividad.getCuadrilla_id());
+            conexion.comando.setInt(7, actividad.getCve_colonia());
+            conexion.comando.setInt(8, actividad.getUsuario_registro_id()); // id del user que registra la actividad
             // El último parámetro es un OUT para obtener el nuevo ID de la actividad creada
-            conexion.registerOutParameter(8, Types.INTEGER);
+            conexion.registerOutParameter(9, Types.INTEGER);
             conexion.comando.execute();
     
-            int nuevoId = conexion.comando.getInt(8);
+            int nuevoId = conexion.comando.getInt(9);
             actividad.setActividad_id(nuevoId);
             return actividad;
         } finally {
@@ -50,7 +51,8 @@ public class ActividadDAOImpl implements ActividadDAO {
             if (rs.next()) {
                 Actividad actividad = new Actividad(
                     rs.getInt("actividad_id"),
-                    rs.getString("Descripcion"),
+                    rs.getString("detalles"),
+                    rs.getString("tipoActividad"),
                     rs.getDate("Fecha"),
                     rs.getString("imagenEvidencia"),
                     rs.getString("estado"),
@@ -70,15 +72,16 @@ public class ActividadDAOImpl implements ActividadDAO {
     public Actividad update(Actividad actividad) throws SQLException {
         Conexion conexion = new Conexion();
         try {
-            conexion.prepareCall("sp_UpdateActividad", 8); // 7 parámetros
+            conexion.prepareCall("sp_UpdateActividad", 9); // 7 parámetros
             conexion.comando.setInt(1, actividad.getActividad_id());
-            conexion.comando.setString(2, actividad.getDescripcion());
-            conexion.comando.setDate(3, new java.sql.Date(actividad.getFecha().getTime()));
-            conexion.comando.setString(4, actividad.getImagenEvidencia());
-            conexion.comando.setString(5, actividad.getEstado());
-            conexion.comando.setInt(6, actividad.getCuadrilla_id());
-            conexion.comando.setInt(7, actividad.getCve_colonia());
-            conexion.comando.setInt(8, actividad.getUsuario_registro_id()); // id del user que actualiza la actividad
+            conexion.comando.setString(2, actividad.getDetalles());
+            conexion.comando.setString(3, actividad.getTipoActividad());
+            conexion.comando.setDate(4, new java.sql.Date(actividad.getFecha().getTime()));
+            conexion.comando.setString(5, actividad.getImagenEvidencia());
+            conexion.comando.setString(6, actividad.getEstado());
+            conexion.comando.setInt(7, actividad.getCuadrilla_id());
+            conexion.comando.setInt(8, actividad.getCve_colonia());
+            conexion.comando.setInt(9, actividad.getUsuario_registro_id()); // id del user que actualiza la actividad
             
             conexion.comando.executeUpdate();
             return read(actividad.getActividad_id()); // Recuperar la actividad actualizada
@@ -114,7 +117,8 @@ public class ActividadDAOImpl implements ActividadDAO {
             while (rs.next()) {
                 Actividad actividad = new Actividad(
                     rs.getInt("actividad_id"),
-                    rs.getString("Descripcion"),
+                    rs.getString("detalles"),
+                    rs.getString("tipoActividad"),
                     rs.getDate("Fecha"),
                     rs.getString("imagenEvidencia"),
                     rs.getString("estado"),
@@ -143,7 +147,8 @@ public class ActividadDAOImpl implements ActividadDAO {
             while (rs.next()) {
                 Actividad actividad = new Actividad(
                     rs.getInt("actividad_id"),
-                    rs.getString("Descripcion"),
+                    rs.getString("detalles"),
+                    rs.getString("tipoActividad"),
                     rs.getDate("Fecha"),
                     rs.getString("imagenEvidencia"),
                     rs.getString("estado"),
@@ -172,7 +177,8 @@ public class ActividadDAOImpl implements ActividadDAO {
             while (rs.next()) {
                 Actividad actividad = new Actividad(
                     rs.getInt("actividad_id"),
-                    rs.getString("Descripcion"),
+                    rs.getString("detalles"),
+                    rs.getString("tipoActividad"),
                     rs.getDate("Fecha"),
                     rs.getString("imagenEvidencia"),
                     rs.getString("estado"),
@@ -201,7 +207,8 @@ public class ActividadDAOImpl implements ActividadDAO {
             while (rs.next()) {
                 Actividad actividad = new Actividad(
                     rs.getInt("actividad_id"),
-                    rs.getString("Descripcion"),
+                    rs.getString("detalles"),
+                    rs.getString("tipoActividad"),
                     rs.getDate("Fecha"),
                     rs.getString("imagenEvidencia"),
                     rs.getString("estado"),
@@ -218,4 +225,5 @@ public class ActividadDAOImpl implements ActividadDAO {
 
         return lista;
     }
+
 }

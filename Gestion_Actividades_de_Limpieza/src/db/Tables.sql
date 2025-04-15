@@ -71,12 +71,13 @@ CREATE TABLE Empleado_Cuadrilla (
         ON DELETE CASCADE
 );
 
--- select estado from a combo box
+-- select estado from a combo box 
 -- select imagenEvidencia from a file chooser
 -- select fecha from date picker
 CREATE TABLE Actividad (
     actividad_id INT PRIMARY KEY AUTO_INCREMENT,
-    Descripcion VARCHAR(1000) NULL,
+    detalles LONGTEXT NULL,
+    tipoActividad ENUM('Barrido manual', 'Limpieza parques', 'Deshierbe de banquetas', 'Limpieza de calles', 'Recoleccion de basura', 'Limpieza de alcantarillas', 'Limpieza de basureros publicos', 'Limpieza general') DEFAULT 'Limpieza general',
     Fecha DATE NOT NULL,
     imagenEvidencia LONGTEXT NULL, 
     estado ENUM('Pendiente', 'En Proceso', 'Finalizada') DEFAULT 'Pendiente',
