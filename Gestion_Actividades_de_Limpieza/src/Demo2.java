@@ -1,4 +1,4 @@
-package view;
+
 
 import java.util.Date;
 import java.util.Random;
@@ -69,6 +69,12 @@ public class Demo2 {
         System.out.println("Colonias donde se ha realizado la actividad de limpieza de alcantarillas:");
         coloniaController.getColoniasPorTipoActividad("Limpieza de alcantarillas").forEach(colonia -> {
             System.out.println("Detalles de la colonia: " + colonia.toString());
+        });
+
+        // todas las cuadrillas
+        System.out.println("Cuadrillas disponibles:");
+        cuadrillaController.obtenerTodasLasCuadrillas().forEach(cuadrilla -> {
+            System.out.println("Detalles de la cuadrilla: " + cuadrilla.toString());
         });
     }
 
