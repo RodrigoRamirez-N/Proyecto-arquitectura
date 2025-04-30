@@ -162,11 +162,11 @@ public class Login_Form extends javax.swing.JFrame {
     }                                        
 
     private void loginBtnMouseClicked(java.awt.event.MouseEvent evt) {                                      
-        System.out.println("Variblaes ingresadas: " + userNameTxt.getText() + " " + new String(passwordTxt.getPassword()));
+        // System.out.println("Variblaes ingresadas: " + userNameTxt.getText() + " " + new String(passwordTxt.getPassword()));
         AuthController authController = new AuthController();
         boolean auth = authController.autenticarUsuario(userNameTxt.getText(), new String(passwordTxt.getPassword()));
         if(auth) {
-            JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            // JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
             new Home_Menu().setVisible(true);
         } else {

@@ -148,7 +148,7 @@ public class Register_Form extends javax.swing.JFrame {
                                 
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {                                      
-        javax.swing.JOptionPane.showMessageDialog(this, "Logica de insercion de admin con variables:\nNombre: " + userNameTxt.getText() + "\nPassword: " + new String(passwordTxt.getPassword()));
+        // javax.swing.JOptionPane.showMessageDialog(this, "Logica de insercion de admin con variables:\nNombre: " + userNameTxt.getText() + "\nPassword: " + new String(passwordTxt.getPassword()));
         //llamado al controler insertar rol admin por default
         AuthController authController = new AuthController();
         authController.crearAdministrador(userNameTxt.getText(), new String(passwordTxt.getPassword()));
