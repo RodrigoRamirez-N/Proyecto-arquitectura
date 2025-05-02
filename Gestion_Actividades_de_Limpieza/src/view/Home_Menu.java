@@ -5,35 +5,29 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.TableCellRenderer;
 
 import assets.ImagenRuta;
 
 public class Home_Menu extends javax.swing.JFrame {
-    
-    private final String TXT_ID_PLACEHOLDER = "Ingresa el número de empleado";
-    private final String TXT_NOMBRE_PLACEHOLDER = "Ingresa el nombre del empleado";
-    private final String PASSWORD_PLACEHOLDER = "Ingresa la contraseña";
-    private final String TELEPHONE_PLACEHOLDER = "Ingresa el número telefónico del empleado";
-    
-    private final String TXT_ID_PLACEHOLDER2 = "Ingresa el número del jefe";
-    private final String TXT_NOMBRE_PLACEHOLDER2 = "Ingresa el nombre del jefe";
-    private final String TELEPHONE_PLACEHOLDER2 = "Ingresa el número telefónico del jefe";
-    
-    private final String TXT_ID_PLACEHOLDER3 = "Ingresa el número de la cuadrilla";
-    private final String TXT_NOMBRE_PLACEHOLDER3 = "Ingresa el nombre de la cuadrilla";
-    
-    private final Color placeholderColor = Color.GRAY;
-    private final Color inputColor = Color.BLACK;
-    private String uploadedFilePath = null;
+
 
     public Home_Menu() {
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
@@ -45,6 +39,23 @@ public class Home_Menu extends javax.swing.JFrame {
         setupColoniaTableTableSelection();
         setupActividadTableSelection();
         configurarPlaceholderPasswordEmp();
+
+        mainTabbedPane.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                int selectedIndex = mainTabbedPane.getSelectedIndex();
+                String selectedTitle = mainTabbedPane.getTitleAt(selectedIndex);
+                if("Empleados".equals(selectedTitle)) {
+                    // Load the list of cuadrillas when the Empleados tab is selected
+                    loadComboBoxCuadrillas();
+                }
+                if("Cuadrillas".equals(selectedTitle)) {
+                    // Load the list of bosses and employees when the Cuadrillas tab is selected
+                    loadListOfEmpleados();
+                    loadListOfJefes();
+                }
+            }
+        });
     }
     
     // do the same with the other tables
@@ -1686,20 +1697,99 @@ public class Home_Menu extends javax.swing.JFrame {
     }
 
     private void loadComboBoxCuadrillas(){
-    //1 stablish connection with database
-    //2 open connection
-    //3 set the sql commando
-    //4 get the resultset
-    //5 in a while loop iterate through the resultset
-    //in each iteration do: cbListaCuadrillas.add(resultset.value.toString())
+
+        String url = "jdbc:mysql://localhost:3306/gestionlimpieza?useSSL=false&useProcedureBodies=false";
+
+        try (Connection cnx = DriverManager.getConnection(url, "root", "rootpsw")){
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            String sql = "SELECT cuadrilla_id, NombreCuadrilla  FROM cuadrilla";
+
+            Statement stmt = cnx.createStatement();
+            ResultSet resultSet = stmt.executeQuery(sql);
+            // Clear the existing items in the combo box
+            cbListaCuadrillas.removeAllItems();
+            cuadrillaMap.clear();
+            // Iterate through the result set and add items to the combo box
+            while (resultSet.next()) {
+                String cuadrillaId = resultSet.getString("cuadrilla_id");
+                String nombreCuadrilla = resultSet.getString("NombreCuadrilla");
+                cbListaCuadrillas.addItem(nombreCuadrilla); // Add the name to the combo box
+                cuadrillaMap.put(nombreCuadrilla, cuadrillaId); // Store the ID in the map
+            }
+
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Home_Menu.class.getName());
+        }
+
     }
     
     private void loadListOfEmpleados(){
     //listOfEmpleados.add(resultSet.value)
+        String url = "jdbc:mysql://localhost:3306/gestionlimpieza?useSSL=false&useProcedureBodies=false";
+
+        try (Connection cnx = DriverManager.getConnection(url, "root", "rootpsw")){
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            String sql = "SELECT u.Nombre, e.empleado_id FROM Usuario u INNER JOIN Empleado e ON u.usuario_id = e.empleado_id";
+
+            Statement stmt = cnx.createStatement();
+            ResultSet resultSet = stmt.executeQuery(sql);
+
+            // Create a DefaultListModel to hold the items
+            DefaultListModel<String> model = new DefaultListModel<>();
+
+            // Clear the existing items in the Jlist
+            listOfEmpleados.removeAll();
+            empleadoMap.clear();
+            // Iterate through the result set and add items to the Jlist
+            while (resultSet.next()) {
+                String empleadoId = resultSet.getString("empleado_id");
+                String nombreEmpleado = resultSet.getString("Nombre");
+                
+                model.addElement(nombreEmpleado); // Add the name to the list model
+                empleadoMap.put(nombreEmpleado, empleadoId);
+            }
+
+            listOfEmpleados.setModel(model); // Set the new model to the Jlist
+
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Home_Menu.class.getName());
+        }
     }
     
     private void loadListOfJefes(){
     //listOfJefes.add(resultSet.value)
+    String url = "jdbc:mysql://localhost:3306/gestionlimpieza?useSSL=false&useProcedureBodies=false";
+
+        try (Connection cnx = DriverManager.getConnection(url, "root", "rootpsw")){
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            String sql = "SELECT u.Nombre, j.jefe_cuadrilla_id FROM Usuario u INNER JOIN Jefe_Cuadrilla j ON u.usuario_id = j.jefe_cuadrilla_id";
+
+            Statement stmt = cnx.createStatement();
+            ResultSet resultSet = stmt.executeQuery(sql);
+
+            // Create a DefaultListModel to hold the items
+            DefaultListModel<String> model = new DefaultListModel<>();
+
+            // Clear the existing items in the Jlist
+            listOfJefes.removeAll();
+            jefeMap.clear();
+            // Iterate through the result set and add items to the Jlist
+            while (resultSet.next()) {
+                String jefeId = resultSet.getString("jefe_cuadrilla_id");
+                String nombreJefe= resultSet.getString("Nombre");
+                
+                model.addElement(nombreJefe); // Add the name to the list model
+                jefeMap.put(nombreJefe, jefeId); // Store the ID in the map
+            }
+
+            listOfJefes.setModel(model); // Set the new model to the Jlist
+
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Home_Menu.class.getName());
+        }
     }
     
     private void configurarPlaceholderPasswordEmp(){
@@ -1805,6 +1895,22 @@ public class Home_Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify
+    
+    private String uploadedFilePath = null;
+    private final String TXT_ID_PLACEHOLDER = "Ingresa el número de empleado";
+    private final String TXT_NOMBRE_PLACEHOLDER = "Ingresa el nombre del empleado";
+    private final String PASSWORD_PLACEHOLDER = "Ingresa la contraseña";
+    private final String TELEPHONE_PLACEHOLDER = "Ingresa el número telefónico del empleado";
+    private final String TXT_ID_PLACEHOLDER2 = "Ingresa el número del jefe";
+    private final String TXT_NOMBRE_PLACEHOLDER2 = "Ingresa el nombre del jefe";
+    private final String TELEPHONE_PLACEHOLDER2 = "Ingresa el número telefónico del jefe";
+    private final String TXT_ID_PLACEHOLDER3 = "Ingresa el número de la cuadrilla";
+    private final String TXT_NOMBRE_PLACEHOLDER3 = "Ingresa el nombre de la cuadrilla";
+    private final Color placeholderColor = Color.GRAY;
+    private final Color inputColor = Color.BLACK;
+    private Map<String, String> cuadrillaMap = new HashMap<>();
+    private Map<String, String> jefeMap = new HashMap<>();
+    private Map<String, String> empleadoMap = new HashMap<>();
     private javax.swing.JPanel ActividadTabPanel;
     private javax.swing.JTable ActividadTable;
     private javax.swing.JSplitPane ColoniaSplitPane;

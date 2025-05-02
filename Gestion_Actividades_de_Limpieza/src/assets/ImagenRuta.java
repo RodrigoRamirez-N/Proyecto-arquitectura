@@ -4,15 +4,15 @@ public enum ImagenRuta {
 
     ESCUDO_COAH("src/assets/images/escudo-de-coahuila-de-zaragoza.png"),
 
-    ADD_ICON("src/assets/images/add_icon.png"),
+    ADD_ICON("src/assets/images/crud_icons/add_icon.png"),
 
-    EDIT_ICON("src/assets/images/edit_icon.png"),
+    EDIT_ICON("src/assets/images/crud_icons/edit_icon.png"),
 
-    SEARCH_ICON("src/assets/images/icons8-search-22.png"),
+    SEARCH_ICON("src/assets/images/crud_icons/icons8-search-22.png"),
 
-    READ_ICON("src/assets/images/read_icon.png"),
+    READ_ICON("src/assets/images/crud_icons/read_icon.png"),
 
-    REMOVE_ICON("src/assets/images/remove_icon.png"),
+    REMOVE_ICON("src/assets/images/crud_icons/remove_icon.png"),
     
     FOOTER_IMAGE("src/assets/images/footer.png");
 

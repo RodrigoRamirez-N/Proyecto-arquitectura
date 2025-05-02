@@ -49,6 +49,9 @@ CALL sp_GetCuadrillaById(1);
 USE GestionLimpieza;
 SELECT * FROM Colonia;
 
+Use GestionLimpieza;
+SELECT * FROM Usuario;
+
 USE GestionLimpieza;
 DELETE FROM Colonia;
 DELETE FROM Cuadrilla;

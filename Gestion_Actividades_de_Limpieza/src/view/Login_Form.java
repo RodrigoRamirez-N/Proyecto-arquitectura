@@ -3,7 +3,7 @@ package view;
 
 import java.awt.Color;
 
-import javax.swing.JOptionPane;
+//import javax.swing.JOptionPane;
 
 import controller.AuthController;
 import assets.ImagenRuta;
