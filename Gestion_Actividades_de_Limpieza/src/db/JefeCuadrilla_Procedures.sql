@@ -70,7 +70,7 @@ END//
 
 CREATE PROCEDURE sp_GetAllJefesCuadrilla()
 BEGIN
-    SELECT u.usuario_id, u.Nombre, j.telefono 
+    SELECT u.*, j.telefono 
     FROM Usuario u
     INNER JOIN Jefe_Cuadrilla j ON u.usuario_id = j.jefe_cuadrilla_id;
 END//

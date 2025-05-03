@@ -4,6 +4,8 @@ import dao.interfaces.JefeDAO;
 import model.Jefe;
 import java.util.List;
 import util.Conexion;
+import util.SHA1;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -146,8 +148,8 @@ public class JefeDAOImpl implements JefeDAO {
             while(rs.next()) {
                 Jefe jefe = new Jefe(
                     rs.getInt("usuario_id"),
-                    rs.getString("nombre"),
-                    Integer.toString(rs.getString("contrasena").hashCode()),
+                    rs.getString("Nombre"),
+                    SHA1.encryptThisString(rs.getString("contrasenia")),
                     rs.getString("rol"),
                     rs.getString("telefono")
                 );

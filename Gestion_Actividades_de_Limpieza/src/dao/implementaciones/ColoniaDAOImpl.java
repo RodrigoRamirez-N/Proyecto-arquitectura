@@ -128,7 +128,7 @@ public class ColoniaDAOImpl implements ColoniaDAO{
 
             while (rs.next()) {
                 colonia = new Colonia(
-                    rs.getInt("cveColonia"),
+                    rs.getInt("cve_colonia"),
                     rs.getString("nombreColonia")
                 ); 
                 colonias.add(colonia);

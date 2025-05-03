@@ -3,6 +3,10 @@ package dao.implementaciones;
 import dao.interfaces.EmpleadoDAO;
 import model.Empleado;
 import java.util.List;
+import util.SHA1;
+
+import javax.swing.JOptionPane;
+
 import util.Conexion;
 import java.sql.*;
 import java.util.ArrayList;
@@ -56,15 +60,16 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 
             if(rs.next()){
                 empleado = new Empleado(
-                    rs.getInt("empleado_id"),
+                    rs.getInt("usuario_id"),
                     rs.getString("nombre"),
-                    Integer.toString(rs.getString("contrasena").hashCode()),
+                    Integer.toString(rs.getString("contrasenia").hashCode()),
                     rs.getString("rol"),
                     rs.getString("telefono")
                 );
 
             } else {
                 System.out.println("No se encontró el empleado con ID: " + idEmpleado);
+                JOptionPane.showMessageDialog(null, "El empleado con ID: " + idEmpleado +" no existe.", "Advertencia", JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException e) {
             System.out.println("Error al leer el empleado: ");
@@ -80,20 +85,22 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
         Conexion conn = new Conexion();
 
         try {
-            String call = "{call sp_UpdateEmpleado(?,?,?,?)}";
+            String call = "{call sp_UpdateEmpleado(?,?,?,?,?)}";
             conn.comando = conn.cnx.prepareCall(call);
 
             conn.comando.setInt(1, empleado.getId()); // no es para cambiar el id, es para buscar el empleado
-            conn.comando.setString(2, empleado.getNombre());
-            conn.comando.setString(3, empleado.getPassword());
-            conn.comando.setString(4, empleado.getTelefono());
+            conn.comando.setString(2, empleado.getTelefono());
+            conn.comando.setString(3, empleado.getNombre());
+            conn.comando.setString(4, empleado.getPassword());
+            conn.comando.registerOutParameter(5, Types.INTEGER);
+            conn.comando.executeUpdate();
 
-            int rowsAffected = conn.comando.executeUpdate();
+            int rowsAffected = conn.comando.getInt(5);
 
             if(rowsAffected > 0) {
                 System.out.println("Empleado actualizado con ID: " + empleado.getId());
             } else {
-                System.err.println("Error al actualizar el empleado: ID no válido");
+                System.err.println("Empleado con ID válido, pero sin cambios.");
             }
 
         } catch (SQLException e) {
@@ -109,17 +116,18 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
         Conexion conn = new Conexion();
 
         try {
-            String call = "{call sp_DeleteEmpleado(?)}";
+            String call = "{call sp_DeleteEmpleado(?,?)}";
             conn.comando = conn.cnx.prepareCall(call);
             conn.comando.setInt(1, idEmpleado);
-
-            int rowsAffected = conn.comando.executeUpdate();
+            conn.comando.registerOutParameter(2, Types.INTEGER);
+            conn.comando.executeUpdate();
+            int rowsAffected = conn.comando.getInt(2);
 
             if(rowsAffected > 0) {
                 System.out.println("Empleado eliminado con ID: " + idEmpleado);
                 return true;
             } else {
-                System.err.println("Error al eliminar el empleado: ID no válido");
+                System.err.println("No se eliminó ningún registro. Puede que el ID no exista o ya haya sido eliminado.");
                 return false;
             }
 
@@ -145,9 +153,9 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 
             while(rs.next()) {
                 Empleado empleado = new Empleado(
-                    rs.getInt("empleado_id"),
-                    rs.getString("nombre"),
-                    Integer.toString(rs.getString("contrasena").hashCode()),
+                    rs.getInt("usuario_id"),
+                    rs.getString("Nombre"),
+                    SHA1.encryptThisString(rs.getString("contrasenia")),
                     rs.getString("rol"),
                     rs.getString("telefono")
                 );

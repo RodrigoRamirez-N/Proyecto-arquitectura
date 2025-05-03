@@ -35,10 +35,6 @@ public class EmpleadoController {
         if (emp.getPassword() == null || emp.getPassword().isEmpty()) {
             throw new IllegalArgumentException("El password no puede ser nulo o vacio");
         }
-        // validaciones, por ejemplo que el rol no sea null o vacio
-        if (emp.getRol() == null || emp.getRol().isEmpty()) {
-            throw new IllegalArgumentException("El rol no puede ser nulo o vacio");
-        }
         // validaciones, por ejemplo que el telefono no sea null o vacio
         if (emp.getTelefono() == null || emp.getTelefono().isEmpty()) {
             throw new IllegalArgumentException("El telefono no puede ser nulo o vacio");
@@ -61,17 +57,18 @@ public class EmpleadoController {
         return -1; // Retorna null si hubo un error
     }
     
-    public void leerEmpleado(int idEmpleado) {
+    public Empleado leerEmpleado(int idEmpleado) {
         if( idEmpleado < 0) {
             throw new IllegalArgumentException("El id no puede ser negativo");
         }
 
         try {
-            Empleado emp = empleadoDAO.read(idEmpleado);
-            System.out.println(emp.toString());
+            return empleadoDAO.read(idEmpleado);
+            //System.out.println(emp.toString());
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null; // Retorna null si hubo un error
     }
     
     public void deleteEmpleado(int idEmpleado) {

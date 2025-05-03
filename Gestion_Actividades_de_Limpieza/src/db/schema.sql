@@ -52,6 +52,9 @@ SELECT * FROM Colonia;
 Use GestionLimpieza;
 SELECT * FROM Usuario;
 
+Use GestionLimpieza;
+CALL sp_ObtenerEmpleadosPorCuadrilla(1);
+
 USE GestionLimpieza;
 DELETE FROM Colonia;
 DELETE FROM Cuadrilla;
