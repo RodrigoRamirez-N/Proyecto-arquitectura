@@ -5,12 +5,17 @@ DROP PROCEDURE IF EXISTS sp_CreateCuadrilla;
 CREATE PROCEDURE sp_CreateCuadrilla(
     IN p_NombreCuadrilla VARCHAR(255),
     IN p_jefe_id INT,
+    IN p_fecha DATE,
     OUT p_cuadrilla_id INT
 )
 BEGIN
     INSERT INTO Cuadrilla(NombreCuadrilla, jefe_id, Fecha)
-    VALUES (p_NombreCuadrilla, p_jefe_id, CURDATE()); --func inserta fecha actual
-    
+    VALUES (
+        p_NombreCuadrilla,
+        p_jefe_id,
+        COALESCE(p_fecha, CURDATE())
+    );
+
     SET p_cuadrilla_id = LAST_INSERT_ID();
 END//
 

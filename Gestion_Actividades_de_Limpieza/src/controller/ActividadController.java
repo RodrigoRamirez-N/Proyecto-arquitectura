@@ -4,7 +4,7 @@ import dao.implementaciones.ActividadDAOImpl;
 import dao.interfaces.ActividadDAO;
 import model.Actividad;
 import java.sql.SQLException;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public class ActividadController {

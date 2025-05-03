@@ -57,7 +57,8 @@ BEGIN
     SELECT DISTINCT c.cve_colonia, c.NombreColonia
     FROM Actividad a
     JOIN Colonia c ON a.cve_colonia = c.cve_colonia
-    WHERE a.tipoActividad = p_tipoActividad;
+    WHERE a.tipoActividad COLLATE utf8mb4_general_ci = p_tipoActividad COLLATE utf8mb4_general_ci;
+
 END //
 
 DELIMITER ;

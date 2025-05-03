@@ -42,9 +42,9 @@ public class EmpleadoController {
         return true;
     }
 
-    public int crearEmpleado(String nombre, String password, String rol, String telefono) {
+    public int crearEmpleado(String nombre, String password, String telefono) {
         
-        Empleado emp = new Empleado(0, nombre, password, rol, telefono);
+        Empleado emp = new Empleado(0, nombre, password, "empleado", telefono);
         // el id se asigna automáticamente en la base de datos asi que se le asigna 0 al crear el objeto
         if (!validarEmpleadoFields(emp)) {
             throw new IllegalArgumentException("Los campos del empleado no son validos");

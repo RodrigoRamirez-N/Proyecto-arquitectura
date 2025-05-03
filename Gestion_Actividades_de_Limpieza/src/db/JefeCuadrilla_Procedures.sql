@@ -51,9 +51,12 @@ CREATE PROCEDURE sp_UpdateJefeCuadrilla(
     IN p_id INT,
     IN p_telefono VARCHAR(10),
     IN p_nombre VARCHAR(255),
-    IN p_contrasena VARCHAR(255)
+    IN p_contrasena VARCHAR(255),
+    OUT filas_afectadas INT
 )
 BEGIN
+    DECLARE total INT DEFAULT 0;
+
     START TRANSACTION;
     
     UPDATE Usuario
@@ -61,11 +64,17 @@ BEGIN
         Contrasenia = p_contrasena
     WHERE usuario_id = p_id;
     
+    SET total = total + ROW_COUNT();
+
     UPDATE Jefe_Cuadrilla
     SET telefono = p_telefono
     WHERE jefe_cuadrilla_id = p_id;
     
+    SET total = total + ROW_COUNT();
+
     COMMIT;
+
+    SET filas_afectadas = total;
 END//
 
 CREATE PROCEDURE sp_GetAllJefesCuadrilla()
@@ -118,20 +127,27 @@ END //
 
 DROP PROCEDURE IF EXISTS sp_DeleteJefeCuadrilla;
 CREATE PROCEDURE sp_DeleteJefeCuadrilla(
-    IN p_id INT
+    IN p_id INT,
+    OUT filas_afectadas INT
 )
 BEGIN
+    DECLARE total INT DEFAULT 0;
+
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
+        SET filas_afectadas = -1;
     END;
     
     START TRANSACTION;
     
     DELETE FROM Jefe_Cuadrilla WHERE jefe_cuadrilla_id = p_id;
     DELETE FROM Usuario WHERE usuario_id = p_id;
+    SET total = total + ROW_COUNT();
     
     COMMIT;
+
+    SET filas_afectadas = total;
 END//
 
 DELIMITER ;

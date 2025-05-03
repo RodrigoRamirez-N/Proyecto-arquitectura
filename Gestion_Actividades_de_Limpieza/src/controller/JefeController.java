@@ -41,9 +41,9 @@ public class JefeController {
     }
 
     // Actualizar un jefe existente
-    public void actualizarJefe(int idJefe, String nombre, String contrasena, String rol, String telefono) {
+    public void actualizarJefe(int idJefe, String nombre, String contrasena, String telefono) {
         try {
-            Jefe jefeExistente = new Jefe(idJefe, nombre, contrasena, rol, telefono);
+            Jefe jefeExistente = new Jefe(idJefe, nombre, contrasena, "jefe", telefono);
             jefeDAO.update(jefeExistente);
         } catch (SQLException e) {
             System.err.println("Error al actualizar jefe: " + e.getMessage());

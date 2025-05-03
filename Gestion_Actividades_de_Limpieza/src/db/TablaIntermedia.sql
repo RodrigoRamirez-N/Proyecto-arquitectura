@@ -74,7 +74,7 @@ BEGIN
         c.NombreCuadrilla,
         jefe.Nombre AS NombreJefe,
         u.usuario_id AS empleado_id,
-        u.Contrasenia AS contrasena,
+        u.Contrasenia AS contrasenia,
         u.Nombre AS NombreEmpleado,
         u.rol,
         e.telefono

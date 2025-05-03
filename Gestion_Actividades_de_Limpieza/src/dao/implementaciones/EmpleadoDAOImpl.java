@@ -62,7 +62,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
                 empleado = new Empleado(
                     rs.getInt("usuario_id"),
                     rs.getString("nombre"),
-                    Integer.toString(rs.getString("contrasenia").hashCode()),
+                    SHA1.encryptThisString(rs.getString("contrasenia")),
                     rs.getString("rol"),
                     rs.getString("telefono")
                 );
@@ -240,7 +240,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
                 Empleado empleado = new Empleado(
                     rs.getInt("empleado_id"),
                     rs.getString("NombreEmpleado"),
-                    Integer.toString(rs.getString("contrasena").hashCode()),
+                    SHA1.encryptThisString(rs.getString("contrasenia")),
                     rs.getString("rol"),
                     rs.getString("telefono")
                 );

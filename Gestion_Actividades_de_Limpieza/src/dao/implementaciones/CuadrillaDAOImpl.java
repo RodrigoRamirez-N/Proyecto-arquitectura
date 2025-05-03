@@ -14,16 +14,34 @@ public class CuadrillaDAOImpl implements CuadrillaDAO {
     public Cuadrilla createCuadrilla(Cuadrilla cuadrilla) {
         Conexion conexion = new Conexion();
         try {
-            conexion.prepareCall("sp_CreateCuadrilla", 3);
+            conexion.prepareCall("sp_CreateCuadrilla", 4); // ahora son 4 parámetros
             conexion.comando.setString(1, cuadrilla.getNombreCuadrilla());
-            conexion.comando.setInt(2, cuadrilla.getIdJefeCuadrilla());
-            conexion.registerOutParameter(3, Types.INTEGER);
+    
+            // Interpretar jefe_id = 0 como null
+            if (cuadrilla.getIdJefeCuadrilla() == 0) {
+                conexion.comando.setNull(2, Types.INTEGER);
+            } else {
+                conexion.comando.setInt(2, cuadrilla.getIdJefeCuadrilla());
+            }
+    
+            // Manejo de fecha nula o fecha futura
+            if (cuadrilla.getFechaCreacionCuadrilla() != null) {
+                java.util.Date currentDate = new java.util.Date();
+                if (cuadrilla.getFechaCreacionCuadrilla().after(currentDate)) {
+                    throw new IllegalArgumentException("La fecha de creación no puede estar en el futuro.");
+                }
+                java.sql.Date sqlDate = new java.sql.Date(cuadrilla.getFechaCreacionCuadrilla().getTime());
+                conexion.comando.setDate(3, sqlDate);
+            } else {
+                conexion.comando.setNull(3, Types.DATE);
+            }
+    
+            conexion.registerOutParameter(4, Types.INTEGER); // OUT param
             conexion.comando.execute();
-
-            int nuevoId = conexion.comando.getInt(3);
+    
+            int nuevoId = conexion.comando.getInt(4);
             cuadrilla.setIdCuadrilla(nuevoId);
-            // recuperar la cuadrilla creada para obtener la fecha creada por la bd en el sp
-            return readCuadrilla(nuevoId);
+            return readCuadrilla(nuevoId); // Obtener datos actualizados (incluyendo fecha real usada)
         } catch (SQLException e) {
             System.err.println("Error al crear cuadrilla: " + e.getMessage());
         } finally {
@@ -31,6 +49,8 @@ public class CuadrillaDAOImpl implements CuadrillaDAO {
         }
         return null;
     }
+    
+    
 
     @Override
     public Cuadrilla readCuadrilla(int idCuadrilla) {

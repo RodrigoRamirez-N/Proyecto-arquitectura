@@ -81,20 +81,21 @@ public class JefeDAOImpl implements JefeDAO {
         Conexion conn = new Conexion();
 
         try {
-            String call = "{call sp_UpdateJefeCuadrilla(?,?,?,?)}";
+            String call = "{call sp_UpdateJefeCuadrilla(?,?,?,?,?)}";
             conn.comando = conn.cnx.prepareCall(call);
 
             conn.comando.setInt(1, jefe.getId()); // no es para cambiar el id, es para buscar el jefe
-            conn.comando.setString(2, jefe.getNombre());
-            conn.comando.setString(3, jefe.getPassword());
-            conn.comando.setString(4, jefe.getTelefono());
-
-            int rowsAffected = conn.comando.executeUpdate();
+            conn.comando.setString(2, jefe.getTelefono());
+            conn.comando.setString(3, jefe.getNombre());
+            conn.comando.setString(4, jefe.getPassword());
+            conn.comando.registerOutParameter(5, Types.INTEGER);
+            conn.comando.executeUpdate();
+            int rowsAffected = conn.comando.getInt(5);
 
             if(rowsAffected > 0) {
                 System.out.println("Jefe actualizado con ID: " + jefe.getId());
             } else {
-                System.err.println("Error al actualizar el jefe: ID no válido");
+                System.err.println("Jefe con Id válido pero sin cambios.");
             }
 
         } catch (SQLException e) {
@@ -110,17 +111,19 @@ public class JefeDAOImpl implements JefeDAO {
         Conexion conn = new Conexion();
 
         try {
-            String call = "{call sp_DeleteJefeCuadrilla(?)}";
+            String call = "{call sp_DeleteJefeCuadrilla(?,?)}";
             conn.comando = conn.cnx.prepareCall(call);
             conn.comando.setInt(1, idJefe);
+            conn.comando.registerOutParameter(2, Types.INTEGER);
+            conn.comando.executeUpdate();
 
-            int rowsAffected = conn.comando.executeUpdate();
+            int rowsAffected = conn.comando.getInt(2);
 
             if(rowsAffected > 0) {
                 System.out.println("Jefe eliminado con ID: " + idJefe);
                 return true;
             } else {
-                System.err.println("Error al eliminar el jefe: ID no válido");
+                System.err.println("No se eliminó ningún registro. Puede que el ID no exista o ya haya sido eliminado.");
                 return false;
             }
 

@@ -3,6 +3,8 @@ package controller;
 import model.Cuadrilla;
 import dao.interfaces.CuadrillaDAO;
 import dao.implementaciones.CuadrillaDAOImpl;
+
+import java.sql.Date;
 import java.util.List;
 
 public class CuadrillaController {
@@ -14,10 +16,11 @@ public class CuadrillaController {
     }
 
     // Crear una nueva cuadrilla
-    public Cuadrilla crearCuadrilla(String nombreCuadrilla, int idJefeCuadrilla) {
+    public Cuadrilla crearCuadrilla(String nombreCuadrilla, Date fechaCreacion) {
         try {
             // Crear la nueva cuadrilla con un ID inicial de 0 (será generado por la base de datos)
-            Cuadrilla nuevaCuadrilla = new Cuadrilla(idJefeCuadrilla, 0, nombreCuadrilla, null);
+            // id del jefe inicializa en 0, ya que sera asignado posteriormente
+            Cuadrilla nuevaCuadrilla = new Cuadrilla(0,0, nombreCuadrilla, fechaCreacion);
             return cuadrillaDAO.createCuadrilla(nuevaCuadrilla); // Llama al DAO para crear la cuadrilla
         } catch (Exception e) {
             System.err.println("Error al crear cuadrilla: " + e.getMessage());
@@ -37,6 +40,13 @@ public class CuadrillaController {
 
     // Actualizar una cuadrilla existente
     public Cuadrilla actualizarCuadrilla(int idCuadrilla, String nombreCuadrilla, int idJefeCuadrilla) {
+        // Verifica si la cuadrilla existe antes de intentar actualizarla
+        Cuadrilla cuadrillaExistente = obtenerCuadrillaPorId(idCuadrilla);
+        if (cuadrillaExistente == null) {
+            System.err.println("La cuadrilla con ID " + idCuadrilla + " no existe.");
+            return null;
+        }
+
         try {
             Cuadrilla cuadrillaActualizada = new Cuadrilla(idJefeCuadrilla, idCuadrilla, nombreCuadrilla, null);
             return cuadrillaDAO.updateCuadrilla(cuadrillaActualizada); // Llama al DAO para actualizar la cuadrilla

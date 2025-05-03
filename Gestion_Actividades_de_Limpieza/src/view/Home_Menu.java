@@ -1,4 +1,3 @@
-
 package view;
 
 import java.awt.Color;
@@ -13,7 +12,7 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -174,18 +173,26 @@ public class Home_Menu extends javax.swing.JFrame {
                 int selectedRow = ActividadTable.getSelectedRow();
                 if(selectedRow != -1) {
                     try {
-                        String idAct = ActividadTable.getValueAt(selectedRow, 0).toString();
-                        String detalles = ActividadTable.getValueAt(selectedRow, 1).toString();
-                        String tipo = ActividadTable.getValueAt(selectedRow, 2).toString();
-                        String fecha = ActividadTable.getValueAt(selectedRow, 3).toString();
-                        String estado = ActividadTable.getValueAt(selectedRow, 4).toString();
-                        String idCuad = ActividadTable.getValueAt(selectedRow, 5).toString();
-                        String idCol = ActividadTable.getValueAt(selectedRow, 6).toString();
-                        String idUser = ActividadTable.getValueAt(selectedRow, 7).toString();
-                        String evidenciaPath = ActividadTable.getValueAt(selectedRow, 8).toString();
+                        String idAct = getValueAtOrDefault(ActividadTable, selectedRow, 0);
+                        String detalles = getValueAtOrDefault(ActividadTable, selectedRow, 1);
+                        String tipo = getValueAtOrDefault(ActividadTable,selectedRow, 2);
+                        String fecha = getValueAtOrDefault(ActividadTable, selectedRow, 3);
+                        String estado = getValueAtOrDefault(ActividadTable, selectedRow, 4);
+                        String idCuad = getValueAtOrDefault(ActividadTable, selectedRow, 5);
+                        String idCol = getValueAtOrDefault(ActividadTable, selectedRow, 6);
+                        String idUser = getValueAtOrDefault(ActividadTable, selectedRow, 7);
+                        String evidenciaPath = getValueAtOrDefault(ActividadTable, selectedRow, 8);
+                        
+                        if (evidenciaPath != null && !evidenciaPath.isEmpty()) {
+                            ImageIcon icon = new ImageIcon(new ImageIcon(evidenciaPath).getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH));
+                        
+                            lbl_Image.setIcon(icon);
+                        } else {
+                            lbl_Image.setText("Aún no hay evidencia");
+                        }
                         
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                        Date fechaParsed = sdf.parse(fecha);
+                        java.sql.Date fechaParsed = new java.sql.Date(sdf.parse(fecha).getTime());
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(fechaParsed);
                         
@@ -198,9 +205,6 @@ public class Home_Menu extends javax.swing.JFrame {
                         txt_Id_Col.setText(idCol);
                         txt_Id_User.setText(idUser);
                         
-                        ImageIcon icon = new ImageIcon(new ImageIcon(evidenciaPath).getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH));
-                        
-                        lbl_Image.setIcon(icon);
                         
                     } catch (ParseException ex) {
                         Logger.getLogger(Home_Menu.class.getName()).log(Level.SEVERE, null, ex);
@@ -210,6 +214,12 @@ public class Home_Menu extends javax.swing.JFrame {
             }
         });
     
+    }
+
+    // Helper method to get value at a specific row and column, returning a default string if null
+    private String getValueAtOrDefault(JTable table, int row, int column) {
+        Object value = table.getValueAt(row, column);
+        return (value != null) ? value.toString() : "";  // Returns an empty string if the value is null
     }
 
     @SuppressWarnings("unchecked")
@@ -237,6 +247,7 @@ public class Home_Menu extends javax.swing.JFrame {
         txt_Nombre_Empleado = new javax.swing.JTextField();
         txt_Tel_Empleado = new javax.swing.JTextField();
         btnBuscarEmpleado = new javax.swing.JButton();
+        btnEmpleadosPorCuadrilla = new javax.swing.JButton();
         txt_Password_Empleado = new javax.swing.JPasswordField();
         jLabel12 = new javax.swing.JLabel();
         cbListaCuadrillas = new javax.swing.JComboBox<>();
@@ -514,6 +525,19 @@ public class Home_Menu extends javax.swing.JFrame {
 
         jLabel12.setText("Cuadrillas");
 
+        btnEmpleadosPorCuadrilla.setIcon(new ImageIcon(ImagenRuta.SEARCH_ICON.getRuta())); // NOI18N
+        btnEmpleadosPorCuadrilla.setToolTipText("Buscar");
+        btnEmpleadosPorCuadrilla.setBorderPainted(false);
+        btnEmpleadosPorCuadrilla.setContentAreaFilled(false);
+        btnEmpleadosPorCuadrilla.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEmpleadosPorCuadrilla.setFocusPainted(false);
+        btnEmpleadosPorCuadrilla.setPreferredSize(new java.awt.Dimension(75, 22));
+        btnEmpleadosPorCuadrilla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEmpleadosPorCuadrillaMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout textFieldsPanelEmpleadoLayout = new javax.swing.GroupLayout(textFieldsPanelEmpleado);
         textFieldsPanelEmpleado.setLayout(textFieldsPanelEmpleadoLayout);
         textFieldsPanelEmpleadoLayout.setHorizontalGroup(
@@ -537,7 +561,10 @@ public class Home_Menu extends javax.swing.JFrame {
                             .addComponent(txt_Password_Empleado))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnBuscarEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(cbListaCuadrillas, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(textFieldsPanelEmpleadoLayout.createSequentialGroup()
+                        .addComponent(cbListaCuadrillas, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEmpleadosPorCuadrilla, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(314, Short.MAX_VALUE))
         );
         textFieldsPanelEmpleadoLayout.setVerticalGroup(
@@ -562,10 +589,12 @@ public class Home_Menu extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(txt_Tel_Empleado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
-                .addGroup(textFieldsPanelEmpleadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(cbListaCuadrillas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(332, Short.MAX_VALUE))
+                .addGroup(textFieldsPanelEmpleadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(textFieldsPanelEmpleadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel12)
+                        .addComponent(cbListaCuadrillas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnEmpleadosPorCuadrilla, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(324, Short.MAX_VALUE))
         );
 
         inputPanelEmpleado.add(textFieldsPanelEmpleado, java.awt.BorderLayout.CENTER);
@@ -641,6 +670,11 @@ public class Home_Menu extends javax.swing.JFrame {
         btnAddJefe.setFocusPainted(false);
         btnAddJefe.setMaximumSize(new java.awt.Dimension(64, 64));
         buttonsPanelJefe.add(btnAddJefe);
+        btnAddJefe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAddJefeMouseClicked(evt);
+            }
+        });
 
         btnReadJefe.setIcon(new ImageIcon(ImagenRuta.READ_ICON.getRuta())); // NOI18N
         btnReadJefe.setToolTipText("Ver todos los registros");
@@ -649,6 +683,11 @@ public class Home_Menu extends javax.swing.JFrame {
         btnReadJefe.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnReadJefe.setFocusPainted(false);
         buttonsPanelJefe.add(btnReadJefe);
+        btnReadJefe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnReadJefeMouseClicked(evt);
+            }
+        });
 
         btnEditJefe.setIcon(new ImageIcon(ImagenRuta.EDIT_ICON.getRuta())); // NOI18N
         btnEditJefe.setToolTipText("Edita el registro actual");
@@ -657,6 +696,11 @@ public class Home_Menu extends javax.swing.JFrame {
         btnEditJefe.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnEditJefe.setFocusPainted(false);
         buttonsPanelJefe.add(btnEditJefe);
+        btnEditJefe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEditJefeMouseClicked(evt);
+            }
+        });
 
         btnDeleteJefe.setIcon(new ImageIcon(ImagenRuta.REMOVE_ICON.getRuta())); // NOI18N
         btnDeleteJefe.setToolTipText("Eliminar registro");
@@ -665,6 +709,11 @@ public class Home_Menu extends javax.swing.JFrame {
         btnDeleteJefe.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnDeleteJefe.setFocusPainted(false);
         buttonsPanelJefe.add(btnDeleteJefe);
+        btnDeleteJefe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDeleteJefeMouseClicked(evt);
+            }
+        });
 
         inputPanelJefe.add(buttonsPanelJefe, java.awt.BorderLayout.SOUTH);
 
@@ -837,6 +886,11 @@ public class Home_Menu extends javax.swing.JFrame {
         btnAddCuadrilla.setFocusPainted(false);
         btnAddCuadrilla.setMaximumSize(new java.awt.Dimension(64, 64));
         buttonsPanelCuadrilla.add(btnAddCuadrilla);
+        btnAddCuadrilla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAddCuadrillaMouseClicked(evt);
+            }
+        });
 
         btnReadCuadrilla.setIcon(new ImageIcon(ImagenRuta.READ_ICON.getRuta())); // NOI18N
         btnReadCuadrilla.setToolTipText("Ver todos los registros");
@@ -845,6 +899,11 @@ public class Home_Menu extends javax.swing.JFrame {
         btnReadCuadrilla.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnReadCuadrilla.setFocusPainted(false);
         buttonsPanelCuadrilla.add(btnReadCuadrilla);
+        btnReadCuadrilla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnReadCuadrillaMouseClicked(evt);
+            }
+        });
 
         btnEditCuadrilla.setIcon(new ImageIcon(ImagenRuta.EDIT_ICON.getRuta())); // NOI18N
         btnEditCuadrilla.setToolTipText("Edita el registro actual");
@@ -853,6 +912,11 @@ public class Home_Menu extends javax.swing.JFrame {
         btnEditCuadrilla.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnEditCuadrilla.setFocusPainted(false);
         buttonsPanelCuadrilla.add(btnEditCuadrilla);
+        btnEditCuadrilla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEditCuadrillaMouseClicked(evt);
+            }
+        });
 
         btnDeleteCuadrilla.setIcon(new ImageIcon(ImagenRuta.REMOVE_ICON.getRuta())); // NOI18N
         btnDeleteCuadrilla.setToolTipText("Eliminar registro");
@@ -861,6 +925,11 @@ public class Home_Menu extends javax.swing.JFrame {
         btnDeleteCuadrilla.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnDeleteCuadrilla.setFocusPainted(false);
         buttonsPanelCuadrilla.add(btnDeleteCuadrilla);
+        btnDeleteCuadrilla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDeleteCuadrillaMouseClicked(evt);
+            }
+        });
 
         inputPanelCuadrilla.add(buttonsPanelCuadrilla, java.awt.BorderLayout.SOUTH);
 
@@ -897,6 +966,11 @@ public class Home_Menu extends javax.swing.JFrame {
         btnBuscarCuadrilla.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnBuscarCuadrilla.setFocusPainted(false);
         btnBuscarCuadrilla.setPreferredSize(new java.awt.Dimension(75, 22));
+        btnBuscarCuadrilla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBuscarCuadrillaMouseClicked(evt);
+            }
+        });
 
         jLabel24.setText("Empleados");
 
@@ -1076,6 +1150,11 @@ public class Home_Menu extends javax.swing.JFrame {
         btnAddColonia.setFocusPainted(false);
         btnAddColonia.setMaximumSize(new java.awt.Dimension(64, 64));
         buttonsPanelColonia.add(btnAddColonia);
+        btnAddColonia.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAddColoniaMouseClicked(evt);
+            }
+        });
 
         btnReadColonia.setIcon(new ImageIcon(ImagenRuta.READ_ICON.getRuta())); // NOI18N
         btnReadColonia.setToolTipText("Ver todos los registros");
@@ -1084,6 +1163,11 @@ public class Home_Menu extends javax.swing.JFrame {
         btnReadColonia.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnReadColonia.setFocusPainted(false);
         buttonsPanelColonia.add(btnReadColonia);
+        btnReadColonia.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnReadColoniaMouseClicked(evt);
+            }
+        });
 
         btnEditColonia.setIcon(new ImageIcon(ImagenRuta.EDIT_ICON.getRuta())); // NOI18N
         btnEditColonia.setToolTipText("Edita el registro actual");
@@ -1092,6 +1176,11 @@ public class Home_Menu extends javax.swing.JFrame {
         btnEditColonia.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnEditColonia.setFocusPainted(false);
         buttonsPanelColonia.add(btnEditColonia);
+        btnEditColonia.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEditColoniaMouseClicked(evt);
+            }
+        });
 
         btnDeleteColonia.setIcon(new ImageIcon(ImagenRuta.REMOVE_ICON.getRuta())); // NOI18N
         btnDeleteColonia.setToolTipText("Eliminar registro");
@@ -1100,6 +1189,11 @@ public class Home_Menu extends javax.swing.JFrame {
         btnDeleteColonia.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnDeleteColonia.setFocusPainted(false);
         buttonsPanelColonia.add(btnDeleteColonia);
+        btnDeleteColonia.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDeleteColoniaMouseClicked(evt);
+            }
+        });
 
         inputPanelColonia.add(buttonsPanelColonia, java.awt.BorderLayout.SOUTH);
 
@@ -1154,6 +1248,23 @@ public class Home_Menu extends javax.swing.JFrame {
         btnFiltro_ColoniasPorTipoAct.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnFiltro_ColoniasPorTipoAct.setFocusPainted(false);
         btnFiltro_ColoniasPorTipoAct.setPreferredSize(new java.awt.Dimension(75, 22));
+        btnFiltro_ColoniasPorTipoAct.addActionListener(e -> {
+            System.out.println("btnFiltro_ColoniasPorTipoAct clicked");
+            String tipoActividad = cbTipoActFiltro.getSelectedItem().toString().trim();
+            System.out.println("Tipo de actividad: " + tipoActividad);
+        
+            ColoniaController coloniaController = new ColoniaController();
+            List<Colonia> listColonias = coloniaController.getColoniasPorTipoActividad(tipoActividad);
+            DefaultTableModel model = (DefaultTableModel) ColoniaTable.getModel();
+            model.setRowCount(0);
+            for (Colonia colonia : listColonias) {
+                Object[] row = new Object[3];
+                row[0] = colonia.getCveColonia();
+                row[1] = colonia.getNombreColonia();
+                model.addRow(row);
+                System.out.println("Colonia: " + colonia.getNombreColonia() + " Tipo: " + tipoActividad);
+            }
+        });
 
         javax.swing.GroupLayout textFieldsPanelColoniaLayout = new javax.swing.GroupLayout(textFieldsPanelColonia);
         textFieldsPanelColonia.setLayout(textFieldsPanelColoniaLayout);
@@ -1266,6 +1377,11 @@ public class Home_Menu extends javax.swing.JFrame {
         btnAddActividad.setFocusPainted(false);
         btnAddActividad.setMaximumSize(new java.awt.Dimension(64, 64));
         buttonsPanelActividad.add(btnAddActividad);
+        btnAddActividad.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAddActividadMouseClicked(evt);
+            }
+        });
 
         btnReadActividad.setIcon(new ImageIcon(ImagenRuta.READ_ICON.getRuta())); // NOI18N
         btnReadActividad.setToolTipText("Ver todos los registros");
@@ -1274,6 +1390,11 @@ public class Home_Menu extends javax.swing.JFrame {
         btnReadActividad.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnReadActividad.setFocusPainted(false);
         buttonsPanelActividad.add(btnReadActividad);
+        btnReadActividad.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnReadActividadMouseClicked(evt);
+            }
+        });
 
         btnEditActividad.setIcon(new ImageIcon(ImagenRuta.EDIT_ICON.getRuta())); // NOI18N
         btnEditActividad.setToolTipText("Edita el registro actual");
@@ -1282,6 +1403,11 @@ public class Home_Menu extends javax.swing.JFrame {
         btnEditActividad.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnEditActividad.setFocusPainted(false);
         buttonsPanelActividad.add(btnEditActividad);
+        btnEditActividad.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEditActividadMouseClicked(evt);
+            }
+        });
 
         btnDeleteActividad.setIcon(new ImageIcon(ImagenRuta.REMOVE_ICON.getRuta())); // NOI18N
         btnDeleteActividad.setToolTipText("Eliminar registro");
@@ -1290,6 +1416,11 @@ public class Home_Menu extends javax.swing.JFrame {
         btnDeleteActividad.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnDeleteActividad.setFocusPainted(false);
         buttonsPanelActividad.add(btnDeleteActividad);
+        btnDeleteActividad.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDeleteActividadMouseClicked(evt);
+            }
+        });
 
         inputPanelActividad.add(buttonsPanelActividad, java.awt.BorderLayout.SOUTH);
 
@@ -1320,6 +1451,11 @@ public class Home_Menu extends javax.swing.JFrame {
         btnBuscarActividad.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnBuscarActividad.setFocusPainted(false);
         btnBuscarActividad.setPreferredSize(new java.awt.Dimension(75, 22));
+        btnBuscarActividad.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBuscarActividadMouseClicked(evt);
+            }
+        });
 
         txt_Detalles.setColumns(20);
         txt_Detalles.setLineWrap(true);
@@ -2143,7 +2279,6 @@ public class Home_Menu extends javax.swing.JFrame {
         empleadoController.crearEmpleado(
             txt_Nombre_Empleado.getText(),
             String.valueOf(txt_Password_Empleado.getPassword()),
-            "empleado",
             txt_Tel_Empleado.getText()
             );
         refreshEmpleadoTable();
@@ -2192,6 +2327,245 @@ public class Home_Menu extends javax.swing.JFrame {
         model.addRow(row);
     }
     
+    private void btnAddJefeMouseClicked(java.awt.event.MouseEvent evt) {
+        //jefecontroller crearJefe
+        //then refresh table
+        JefeController jefeController = new JefeController();
+        jefeController.crearJefe(
+            txt_Nombre_Jefe.getText(),
+            String.valueOf(txt_Password_Jefe.getPassword()),
+            txt_Tel_Jefe.getText()
+            );
+        refreshJefeTable();
+    }
+
+    private void btnReadJefeMouseClicked(java.awt.event.MouseEvent evt) {
+        refreshJefeTable();
+        //ese metodo ya hace un select all y los muestra en la table
+    }
+
+    private void btnDeleteJefeMouseClicked(java.awt.event.MouseEvent evt) {
+        //jefecontroller eliminarJefe
+        //then refresh table
+        JefeController jefeController = new JefeController();
+        jefeController.eliminarJefe(Integer.parseInt(txt_Id_Jefe.getText()));
+        refreshJefeTable();
+    }
+
+    private void btnEditJefeMouseClicked(java.awt.event.MouseEvent evt) {
+        //jefecontroller editarJefe
+        //then refresh table
+        JefeController jefeController = new JefeController();
+        jefeController.actualizarJefe(
+            Integer.parseInt(txt_Id_Jefe.getText()),
+            txt_Nombre_Jefe.getText(),
+            String.valueOf(txt_Password_Jefe.getPassword()),
+            txt_Tel_Jefe.getText()
+            );
+        refreshJefeTable();
+    }
+
+    private void btnAddCuadrillaMouseClicked(java.awt.event.MouseEvent evt) {
+        //cuadrillacontroller crearCuadrilla
+        //then refresh table
+        CuadrillaController cuadrillaController = new CuadrillaController();
+
+        java.util.Date selectedDate = dateChFecha.getSelectedDate().getTime();
+        java.sql.Date sqlDate = new java.sql.Date(selectedDate.getTime());
+        // Convert java.util.Date to java.sql.Date
+
+        cuadrillaController.crearCuadrilla(
+            txt_Nombre_Cuadrilla.getText(),
+            sqlDate
+        );
+        refreshCuadrillaTable();
+    }
+
+    private void btnReadCuadrillaMouseClicked(java.awt.event.MouseEvent evt) {
+        refreshCuadrillaTable();
+        //ese metodo ya hace un select all y los muestra en la table
+    }
+
+    private void btnDeleteCuadrillaMouseClicked(java.awt.event.MouseEvent evt) {
+        //cuadrillacontroller eliminarCuadrilla
+        //then refresh table
+        CuadrillaController cuadrillaController = new CuadrillaController();
+        cuadrillaController.eliminarCuadrilla(Integer.parseInt(txt_Id_Cuadrilla.getText()));
+        refreshCuadrillaTable();
+    }
+
+    private void btnEditCuadrillaMouseClicked(java.awt.event.MouseEvent evt) {
+        //cuadrillacontroller editarCuadrilla
+        //then refresh table
+        CuadrillaController cuadrillaController = new CuadrillaController();
+        cuadrillaController.actualizarCuadrilla(
+            Integer.parseInt(txt_Id_Cuadrilla.getText()),
+            txt_Nombre_Cuadrilla.getText(),
+            Integer.parseInt(txt_Id_Jefe.getText())
+            );
+        refreshCuadrillaTable();
+    }
+
+    private void btnBuscarCuadrillaMouseClicked(java.awt.event.MouseEvent evt) {
+        //cuadrillacontroller leerCuadrilla
+        //then refresh table
+        CuadrillaController cuadrillaController = new CuadrillaController();
+        Cuadrilla cuadrilla = cuadrillaController.obtenerCuadrillaPorId(Integer.parseInt(txt_Id_Cuadrilla.getText()));
+        DefaultTableModel model = (DefaultTableModel) cuadrillaTable.getModel();
+        model.setRowCount(0); // Clear existing rows
+        Object[] row = new Object[4];
+        row[0] = cuadrilla.getIdCuadrilla();
+        row[1] = cuadrilla.getIdJefeCuadrilla();
+        row[2] = cuadrilla.getNombreCuadrilla();
+        row[3] = cuadrilla.getFechaCreacionCuadrilla();
+        model.addRow(row);
+    }
+
+    private void btnAddColoniaMouseClicked(java.awt.event.MouseEvent evt) {
+        //coloniacontroller crearColonia
+        //then refresh table
+        ColoniaController coloniaController = new ColoniaController();
+        coloniaController.crearColonia(
+            txt_Nombre_Colonia.getText()
+            );
+        refreshColoniaTable();
+    }
+
+    private void btnReadColoniaMouseClicked(java.awt.event.MouseEvent evt) {
+        refreshColoniaTable();
+        //ese metodo ya hace un select all y los muestra en la table
+    }
+
+    private void btnDeleteColoniaMouseClicked(java.awt.event.MouseEvent evt) {
+        //coloniacontroller eliminarColonia
+        //then refresh table
+        ColoniaController coloniaController = new ColoniaController();
+        coloniaController.eliminarColonia(Integer.parseInt(txt_Id_Colonia.getText()));
+        refreshColoniaTable();
+    }
+
+    private void btnEditColoniaMouseClicked(java.awt.event.MouseEvent evt) {
+        //coloniacontroller editarColonia
+        //then refresh table
+        ColoniaController coloniaController = new ColoniaController();
+        coloniaController.actualizarColonia(
+            Integer.parseInt(txt_Id_Colonia.getText()),
+            txt_Nombre_Colonia.getText()
+            );
+        refreshColoniaTable();
+    }
+
+    // private void btnFiltro_ColoniasPorTipoActMouseClicked(java.awt.event.MouseEvent evt) {
+    //     //coloniacontroller filtrarColoniasPorTipoActividad
+    //     //then refresh table
+    //     System.out.println("btnFiltro_ColoniasPorTipoActMouseClicked");
+    //     String tipoActividad = cbTipo.getSelectedItem().toString().trim();
+    //     System.out.println("Tipo de actividad: " + tipoActividad);
+    //     ColoniaController coloniaController = new ColoniaController();
+    //     List<Colonia> listColonias = coloniaController.getColoniasPorTipoActividad(tipoActividad);
+    //     DefaultTableModel model = (DefaultTableModel) ColoniaTable.getModel();
+    //     model.setRowCount(0); // Clear existing rows
+    //     for (Colonia colonia : listColonias) {
+    //         Object[] row = new Object[3];
+    //         row[0] = colonia.getCveColonia();
+    //         row[1] = colonia.getNombreColonia();
+    //         model.addRow(row);
+    //         System.out.println("Colonia: " + colonia.getNombreColonia() + "Tipo: " + tipoActividad);
+    //     }
+        
+    // }
+
+    private void btnEmpleadosPorCuadrillaMouseClicked(java.awt.event.MouseEvent evt) {
+        //empleadocontroller filtrarEmpleadosPorCuadrilla
+        //then refresh table
+        int cuadrillaId = Integer.parseInt(cuadrillaMap.get(cbListaCuadrillas.getSelectedItem().toString()));
+        EmpleadoController empleadoController = new EmpleadoController();
+        //aqui si hay que obtener el id de la cuadrilla del cuadrillamap
+        List<Empleado> listEmpleados = empleadoController.getEmpleadosByCuadrilla(cuadrillaId);
+        DefaultTableModel model = (DefaultTableModel) empleadoTable.getModel();
+        model.setRowCount(0); // Clear existing rows
+        for (Empleado empleado : listEmpleados) {
+            Object[] row = new Object[5];
+            row[0] = empleado.getId();
+            row[1] = empleado.getNombre();
+            row[2] = empleado.getPassword();
+            row[3] = empleado.getRol();
+            row[4] = empleado.getTelefono();
+            model.addRow(row);
+        }
+    }
+
+    private void btnAddActividadMouseClicked(java.awt.event.MouseEvent evt) {
+        //actividadcontroller crearActividad
+        //then refresh table
+        ActividadController actividadController = new ActividadController();
+
+        java.util.Date selectedDate = dateChFecha.getSelectedDate().getTime();
+        java.sql.Date sqlDate = new java.sql.Date(selectedDate.getTime());
+
+        actividadController.createActividad(
+            txt_Detalles.getText(),
+            cbTipo.getSelectedItem().toString(),
+            sqlDate,
+            uploadedFilePath,
+            cbEstado.getSelectedItem().toString(),
+            Integer.parseInt(txt_Id_Cuad.getText()),
+            Integer.parseInt(txt_Id_Col.getText()),
+            Integer.parseInt(txt_Id_User.getText())
+            );
+        refreshActividadTable();
+    }
+
+    private void btnReadActividadMouseClicked(java.awt.event.MouseEvent evt) {
+        refreshActividadTable();
+        //ese metodo ya hace un select all y los muestra en la table
+    }
+
+    private void btnDeleteActividadMouseClicked(java.awt.event.MouseEvent evt) {
+        //actividadcontroller eliminarActividad
+        //then refresh table
+        ActividadController actividadController = new ActividadController();
+        actividadController.deleteActividad(Integer.parseInt(txt_Id_Actividad.getText()));
+        refreshActividadTable();
+    }
+
+    private void btnEditActividadMouseClicked(java.awt.event.MouseEvent evt) {
+        //actividadcontroller editarActividad
+        //then refresh table
+        ActividadController actividadController = new ActividadController();
+        actividadController.updateActividad(
+            Integer.parseInt(txt_Id_Actividad.getText()),
+            txt_Detalles.getText(),
+            cbTipo.getSelectedItem().toString(),
+            (Date) dateChFecha.getSelectedDate().getTime(),
+            uploadedFilePath,
+            cbEstado.getSelectedItem().toString(),
+            Integer.parseInt(txt_Id_Cuad.getText()),
+            Integer.parseInt(txt_Id_Col.getText()),
+            Integer.parseInt(txt_Id_User.getText())
+            );
+        refreshActividadTable();
+    }
+
+    private void btnBuscarActividadMouseClicked(java.awt.event.MouseEvent evt) {
+        //actividadcontroller leerActividad
+        //then refresh table
+        ActividadController actividadController = new ActividadController();
+        Actividad act = actividadController.getActividadById(Integer.parseInt(txt_Id_Actividad.getText()));
+        DefaultTableModel model = (DefaultTableModel) ActividadTable.getModel();
+        model.setRowCount(0); // Clear existing rows
+        Object[] row = new Object[9];
+        row[0] = act.getActividad_id();
+        row[1] = act.getDetalles();
+        row[2] = act.getTipoActividad();
+        row[3] = act.getFecha();
+        row[4] = act.getEstado();
+        row[5] = act.getCuadrilla_id();
+        row[6] = act.getCve_colonia();
+        row[7] = act.getUsuario_registro_id();
+        row[8] = act.getImagenEvidencia();
+        model.addRow(row);
+    }
 
     // Variables declaration - do not modify
     
@@ -2233,6 +2607,7 @@ public class Home_Menu extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscarColonia;
     private javax.swing.JButton btnBuscarCuadrilla;
     private javax.swing.JButton btnBuscarEmpleado;
+    private javax.swing.JButton btnEmpleadosPorCuadrilla;
     private javax.swing.JButton btnBuscarJefe;
     private javax.swing.JButton btnDeleteActividad;
     private javax.swing.JButton btnDeleteColonia;

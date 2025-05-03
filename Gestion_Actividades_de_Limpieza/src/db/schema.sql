@@ -56,6 +56,9 @@ Use GestionLimpieza;
 CALL sp_ObtenerEmpleadosPorCuadrilla(1);
 
 USE GestionLimpieza;
+CALL sp_GetColoniasPorTipoActividad('Limpieza de alcantarillas');
+
+USE GestionLimpieza;
 DELETE FROM Colonia;
 DELETE FROM Cuadrilla;
 DELETE FROM Jefe_Cuadrilla;
