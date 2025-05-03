@@ -1694,6 +1694,105 @@ public class Home_Menu extends javax.swing.JFrame {
 
     private void btnRemoverJefeMouseClicked(java.awt.event.MouseEvent evt) {
         // controller jefe.remover
+        String selectedJefe = listOfJefes.getSelectedValue();
+        int selectedCuadrilla = Integer.parseInt(txt_Id_Cuadrilla.getText());
+        JefeController jefeController = new JefeController();
+        
+        if (selectedJefe != null) {
+            jefeController.removerJefeDeCuadrilla(selectedCuadrilla);
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione un jefe para removerlo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    
+    private void refreshEmpleadoTable() {
+        //empleadocontroller leerEmpleado()
+        //then refresh table
+        EmpleadoController empleadoController = new EmpleadoController();
+        List<Empleado> listEmpleados = empleadoController.getAllEmpleados();
+        DefaultTableModel model = (DefaultTableModel) empleadoTable.getModel();
+        model.setRowCount(0); // Clear existing rows
+        for (Empleado empleado : listEmpleados) {
+            Object[] row = new Object[5];
+            row[0] = empleado.getId();
+            row[1] = empleado.getNombre();
+            row[2] = empleado.getPassword();
+            row[3] = empleado.getRol();
+            row[4] = empleado.getTelefono();
+            model.addRow(row);
+        }
+    }
+    
+    private void refreshJefeTable() {
+        //jefecontroller obtenerJefe
+        //then refresh tablejefe
+        JefeController jefeController = new JefeController();
+        List<Jefe> listJefes = jefeController.obtenerTodosLosJefes();
+        DefaultTableModel model = (DefaultTableModel) jefeTable.getModel();
+        model.setRowCount(0); // Clear existing rows
+        for (Jefe jefe : listJefes) {
+            Object[] row = new Object[5];
+            row[0] = jefe.getId();
+            row[1] = jefe.getNombre();
+            row[2] = jefe.getPassword();
+            row[3] = jefe.getRol();
+            row[4] = jefe.getTelefono();
+            model.addRow(row);
+        }
+    }
+    
+    private void refreshCuadrillaTable() {
+        //cuadrillacontroller obtenerCuadrilla
+        //then refresh tablecuadrilla
+        CuadrillaController cuadrillaController = new CuadrillaController();
+        List<Cuadrilla> listCuadrillas = cuadrillaController.obtenerTodasLasCuadrillas();
+        DefaultTableModel model = (DefaultTableModel) cuadrillaTable.getModel();
+        model.setRowCount(0); // Clear existing rows
+        for (Cuadrilla cuadrilla : listCuadrillas) {
+            Object[] row = new Object[4];
+            row[0] = cuadrilla.getIdCuadrilla();
+            row[1] = cuadrilla.getIdJefeCuadrilla();
+            row[2] = cuadrilla.getNombreCuadrilla();
+            row[3] = cuadrilla.getFechaCreacionCuadrilla();
+            model.addRow(row);
+        }
+    }
+
+    private void refreshActividadTable() {
+        //actividadcontroller obtenerActividad
+        //then refresh tableactividad
+        ActividadController actividadController = new ActividadController();
+        List<Actividad> listActividades = actividadController.getAllActividades();
+        DefaultTableModel model = (DefaultTableModel) ActividadTable.getModel();
+        model.setRowCount(0); // Clear existing rows
+        for (Actividad actividad : listActividades) {
+            Object[] row = new Object[9];
+            row[0] = actividad.getActividad_id();
+            row[1] = actividad.getDetalles();
+            row[2] = actividad.getTipoActividad();
+            row[3] = actividad.getFecha();
+            row[4] = actividad.getEstado();
+            row[5] = actividad.getCuadrilla_id();
+            row[6] = actividad.getCve_colonia();
+            row[7] = actividad.getUsuario_registro_id();
+            row[8] = actividad.getImagenEvidencia();
+            model.addRow(row);
+        }
+    }
+    
+    private void refreshColoniaTable() {
+        //coloniacontroller obtenerColonia
+        //then refresh tablecolonia
+        ColoniaController coloniaController = new ColoniaController();
+        List<Colonia> listColonias = coloniaController.obtenerTodasLasColonias();
+        DefaultTableModel model = (DefaultTableModel) ColoniaTable.getModel();
+        model.setRowCount(0); // Clear existing rows
+        for (Colonia colonia : listColonias) {
+            Object[] row = new Object[3];
+            row[0] = colonia.getCveColonia();
+            row[1] = colonia.getNombreColonia();
+            model.addRow(row);
+        }
     }
 
     private void loadComboBoxCuadrillas(){
