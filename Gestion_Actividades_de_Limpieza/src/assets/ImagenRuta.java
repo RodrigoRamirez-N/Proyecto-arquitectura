@@ -14,7 +14,9 @@ public enum ImagenRuta {
 
     REMOVE_ICON("src/assets/images/crud_icons/remove_icon.png"),
     
-    FOOTER_IMAGE("src/assets/images/footer.png");
+    FOOTER_IMAGE("src/assets/images/footer.png"),
+
+    CLOSE_IMAGE("src/assets/images/close.png");
 
     private static final String RUTA_PROYECTO = "C:\\Users\\rodry\\.vscode\\Proyecto-arquitectura\\Gestion_Actividades_de_Limpieza\\";
 

@@ -36,7 +36,9 @@ import model.Colonia;
 import model.Cuadrilla;
 import model.Empleado;
 import model.Jefe;
+import model.Usuario;
 import util.SHA1;
+import util.Session;
 
 public class Home_Menu extends javax.swing.JFrame {
 
@@ -227,6 +229,9 @@ public class Home_Menu extends javax.swing.JFrame {
 
         backgroundPanel = new javax.swing.JPanel();
         titlePanel = new javax.swing.JPanel();
+        lblCerrarSession = new javax.swing.JLabel();
+        lblTitulote = new javax.swing.JLabel();
+        lblUserLoggedInfo = new javax.swing.JLabel();
         footerPanel = new javax.swing.JPanel();
         lblFooterIMG = new javax.swing.JLabel();
         mainTabbedPane = new javax.swing.JTabbedPane();
@@ -367,16 +372,59 @@ public class Home_Menu extends javax.swing.JFrame {
         titlePanel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         titlePanel.setPreferredSize(new java.awt.Dimension(988, 50));
 
+        lblCerrarSession.setFont(new java.awt.Font("Segoe UI", 0, 14));
+        lblCerrarSession.setForeground(new java.awt.Color(255, 255, 255));
+        lblCerrarSession.setText("Cerrar sesión");
+        lblCerrarSession.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblCerrarSession.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                Session.getInstance().cerrarSesion();
+                Home_Menu.this.setVisible(false);
+                Home_Menu.this.dispose();
+                Login_Form loginForm = new Login_Form();
+                loginForm.setVisible(true);
+            }
+        });
+
+        lblUserLoggedInfo.setFont(new java.awt.Font("Segoe UI", 0, 14));
+        lblUserLoggedInfo.setForeground(new java.awt.Color(255, 255, 255));
+        lblUserLoggedInfo.setText("User: " + Session.getInstance().getUsuario().getNombre());
+
+        lblTitulote.setFont(new java.awt.Font("Segoe UI", 0, 18));
+        lblTitulote.setForeground(new java.awt.Color(255, 255, 255));
+        lblTitulote.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTitulote.setText("Sistema de Gestión de Actividades de Limpieza del municipio de Saltillo");
+        lblTitulote.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+
         javax.swing.GroupLayout titlePanelLayout = new javax.swing.GroupLayout(titlePanel);
         titlePanel.setLayout(titlePanelLayout);
         titlePanelLayout.setHorizontalGroup(
             titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(titlePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTitulote, javax.swing.GroupLayout.DEFAULT_SIZE, 838, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblCerrarSession, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblUserLoggedInfo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         titlePanelLayout.setVerticalGroup(
             titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(titlePanelLayout.createSequentialGroup()
+                .addGroup(titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(titlePanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblTitulote, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(titlePanelLayout.createSequentialGroup()
+                        .addComponent(lblUserLoggedInfo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblCerrarSession)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+        
 
         backgroundPanel.add(titlePanel, java.awt.BorderLayout.NORTH);
 
@@ -2518,9 +2566,10 @@ public class Home_Menu extends javax.swing.JFrame {
             cbEstado.getSelectedItem().toString(),
             Integer.parseInt(txt_Id_Cuad.getText()),
             Integer.parseInt(txt_Id_Col.getText()),
-            Integer.parseInt(txt_Id_User.getText())
+            usuarioActual.getId() //rescatar el id del usuario en la sesión actual
             );
         refreshActividadTable();
+
     }
 
     private void btnReadActividadMouseClicked(java.awt.event.MouseEvent evt) {
@@ -2576,6 +2625,7 @@ public class Home_Menu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify
     
+    public Usuario usuarioActual = Session.getInstance().getUsuario();
     private String uploadedFilePath = null;
     private final String TXT_ID_PLACEHOLDER = "Ingresa el número de empleado";
     private final String TXT_NOMBRE_PLACEHOLDER = "Ingresa el nombre del empleado";
@@ -2683,6 +2733,9 @@ public class Home_Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel lblUserLoggedInfo;
+    private javax.swing.JLabel lblCerrarSession;
+    private javax.swing.JLabel lblTitulote;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

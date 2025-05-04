@@ -3,9 +3,12 @@ package view;
 
 import java.awt.Color;
 
+import javax.swing.JOptionPane;
+
 //import javax.swing.JOptionPane;
 
 import controller.AuthController;
+import model.Usuario;
 import assets.ImagenRuta;
 
 public class Login_Form extends javax.swing.JFrame {
@@ -164,13 +167,12 @@ public class Login_Form extends javax.swing.JFrame {
     private void loginBtnMouseClicked(java.awt.event.MouseEvent evt) {                                      
         // System.out.println("Variblaes ingresadas: " + userNameTxt.getText() + " " + new String(passwordTxt.getPassword()));
         AuthController authController = new AuthController();
-        boolean auth = authController.autenticarUsuario(userNameTxt.getText(), new String(passwordTxt.getPassword()));
-        if(auth) {
-            // JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        Usuario user = authController.autenticarUsuario(userNameTxt.getText(), new String(passwordTxt.getPassword()));
+        if(user != null) {
             this.dispose();
             new Home_Menu().setVisible(true);
         } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }                                     
 

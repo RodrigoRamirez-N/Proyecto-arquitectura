@@ -2,6 +2,7 @@ package controller;
 
 import dao.implementaciones.AuthDAOImpl;
 import dao.interfaces.AuthDAO;
+import model.Usuario;
 
 import java.sql.SQLException;
 
@@ -14,13 +15,12 @@ public class AuthController {
     }
 
     // Método para autenticar a un usuario
-    public boolean autenticarUsuario(String nombre, String contrasena) {
+    public Usuario autenticarUsuario(String nombre, String contrasena) {
         try {
             return authDAO.autenticar(nombre, contrasena);
-            // no es necsario iniciar la sesion aqui, ya que se hace en el DAO
         } catch (SQLException e) {
             System.out.println("Error durante la autenticación: " + e.getMessage());
-            return false;
+            return null;
         }
     }
 
@@ -48,15 +48,6 @@ public class AuthController {
             authDAO.cambiarContrasena(idUsuario, nuevaContrasena);
         } catch (SQLException e) {
             System.out.println("Error al cambiar la contraseña: " + e.getMessage());
-        }
-    }
-
-    // Método para cerrar sesión
-    public void cerrarSesion(int idUsuario) {
-        try {
-            authDAO.cerrarSesion(idUsuario);
-        } catch (SQLException e) {
-            System.out.println("Error al cerrar sesión: " + e.getMessage());
         }
     }
 

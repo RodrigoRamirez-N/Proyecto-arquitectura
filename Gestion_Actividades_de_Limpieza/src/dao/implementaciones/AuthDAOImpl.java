@@ -2,14 +2,17 @@ package dao.implementaciones;
 
 import java.sql.SQLException;
 
+import javax.swing.JOptionPane;
+
 import dao.interfaces.AuthDAO;
+import model.Usuario;
 import util.Conexion;
 import util.Session;
 
 public class AuthDAOImpl implements AuthDAO{
 
     @Override
-    public boolean autenticar(String nombre, String contrasena) throws SQLException {
+    public Usuario autenticar(String nombre, String contrasena) throws SQLException {
         Conexion conn = new Conexion();
 
         try {
@@ -27,13 +30,14 @@ public class AuthDAOImpl implements AuthDAO{
             int idUsuario = conn.comando.getInt(4);
 
             if (result) {
-                System.out.println("Usuario autenticado correctamente. ID: " + idUsuario);
-                Session session = Session.getInstance(); // Get the singleton instance of Session
-                session.iniciarSesion(idUsuario, nombre); // Start the session with the user ID and name
-                return true;
+                //System.out.println("Usuario autenticado correctamente. ID: " + idUsuario);
+                Usuario usuario = new Usuario(idUsuario, nombre, contrasena, "admin");
+                Session.getInstance().iniciarSesion(usuario); // Start the session with the user ID and name
+                return usuario; // Return the authenticated user object
             } else {
                 System.out.println("Error al autenticar usuario.");
-                return false;
+                JOptionPane.showMessageDialog(null, "Credenciales inválidas.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return null; // Return null if authentication fails
             }
 
         } catch (SQLException e) {
@@ -42,7 +46,7 @@ public class AuthDAOImpl implements AuthDAO{
         } finally {
             conn.closeConnection();
         }
-        return false;
+        return null;
     }
 
     @Override
@@ -103,16 +107,6 @@ public class AuthDAOImpl implements AuthDAO{
             conn.closeConnection();
         }
 
-    }
-
-    @Override
-    public void cerrarSesion(int idUsuario) throws SQLException {
-        Session session = Session.getInstance(); // Get the singleton instance of Session
-        session.cerrarSesion(idUsuario); // Close the session for the user ID
-        System.out.println("Sesión cerrada para el usuario con ID: " + idUsuario);
-        // Dispose of the Session resources if needed
-        // dispose(); // Removed as the method is undefined
-        // show the login screen again
     }
 
 }
