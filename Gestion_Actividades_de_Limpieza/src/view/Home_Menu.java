@@ -1841,7 +1841,9 @@ public class Home_Menu extends javax.swing.JFrame {
             //nullable object on database
             uploadedFilePath = selectedFile.getAbsolutePath();
             //display the image on the label for visuualization
-            lbl_Image.setIcon(new ImageIcon(uploadedFilePath));
+            ImageIcon icon = new ImageIcon(new ImageIcon(uploadedFilePath).getImage()
+            .getScaledInstance(200, 200, Image.SCALE_SMOOTH));
+            lbl_Image.setIcon(icon);
         }
     }
 
@@ -1918,6 +1920,12 @@ public class Home_Menu extends javax.swing.JFrame {
     private void btnAsignarEmpleadoMouseClicked(java.awt.event.MouseEvent evt) {
         //controller empleado.asignar
         //get selected item from the list
+        
+        if(txt_Id_Cuadrilla.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese el ID de la cuadrilla.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
         List<String> selectedEmpleados = listOfEmpleados.getSelectedValuesList();
         int selectedCuadrilla = Integer.parseInt(txt_Id_Cuadrilla.getText());
         EmpleadoController empleadoController = new EmpleadoController();
@@ -1930,6 +1938,12 @@ public class Home_Menu extends javax.swing.JFrame {
     
     private void btnRemoverEmpleadoMouseClicked(java.awt.event.MouseEvent evt) {
         // controllerempleado.remover
+
+        if(txt_Id_Cuadrilla.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese el ID de la cuadrilla.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
         List<String> selectedEmpleados = listOfEmpleados.getSelectedValuesList();
         int selectedCuadrilla = Integer.parseInt(txt_Id_Cuadrilla.getText());
         EmpleadoController empleadoController = new EmpleadoController();
@@ -1942,6 +1956,12 @@ public class Home_Menu extends javax.swing.JFrame {
     
     private void btnAsignarJefeMouseClicked(java.awt.event.MouseEvent evt) {
         //controller jefe.asignar
+
+        if(txt_Id_Cuadrilla.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese el ID de la cuadrilla.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
         String selectedJefe = listOfJefes.getSelectedValue();
         int selectedCuadrilla = Integer.parseInt(txt_Id_Cuadrilla.getText());
         JefeController jefeController = new JefeController();
@@ -1956,6 +1976,11 @@ public class Home_Menu extends javax.swing.JFrame {
 
     private void btnRemoverJefeMouseClicked(java.awt.event.MouseEvent evt) {
         // controller jefe.remover
+        if(txt_Id_Cuadrilla.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese el ID de la cuadrilla.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
         String selectedJefe = listOfJefes.getSelectedValue();
         int selectedCuadrilla = Integer.parseInt(txt_Id_Cuadrilla.getText());
         JefeController jefeController = new JefeController();
@@ -2228,8 +2253,10 @@ public class Home_Menu extends javax.swing.JFrame {
             // Acción del botón
             button.addActionListener((ActionEvent e) -> {
                 Object valor = table.getValueAt(currentRow, 8);
-                if (valor != null && !valor.toString().isEmpty()) {
+                if (valor != null && !valor.toString().isEmpty() && !valor.toString().equals("Ver")) {
+                    labelDestino.setText("");
                     String ruta = valor.toString();
+                    System.out.println("Ruta de la imagen: " + ruta);
                     ImageIcon icon = new ImageIcon(new ImageIcon(ruta).getImage()
                     .getScaledInstance(200, 200, Image.SCALE_SMOOTH));
                     labelDestino.setIcon(icon);
@@ -2454,26 +2481,6 @@ public class Home_Menu extends javax.swing.JFrame {
             );
         refreshColoniaTable();
     }
-
-    // private void btnFiltro_ColoniasPorTipoActMouseClicked(java.awt.event.MouseEvent evt) {
-    //     //coloniacontroller filtrarColoniasPorTipoActividad
-    //     //then refresh table
-    //     System.out.println("btnFiltro_ColoniasPorTipoActMouseClicked");
-    //     String tipoActividad = cbTipo.getSelectedItem().toString().trim();
-    //     System.out.println("Tipo de actividad: " + tipoActividad);
-    //     ColoniaController coloniaController = new ColoniaController();
-    //     List<Colonia> listColonias = coloniaController.getColoniasPorTipoActividad(tipoActividad);
-    //     DefaultTableModel model = (DefaultTableModel) ColoniaTable.getModel();
-    //     model.setRowCount(0); // Clear existing rows
-    //     for (Colonia colonia : listColonias) {
-    //         Object[] row = new Object[3];
-    //         row[0] = colonia.getCveColonia();
-    //         row[1] = colonia.getNombreColonia();
-    //         model.addRow(row);
-    //         System.out.println("Colonia: " + colonia.getNombreColonia() + "Tipo: " + tipoActividad);
-    //     }
-        
-    // }
 
     private void btnEmpleadosPorCuadrillaMouseClicked(java.awt.event.MouseEvent evt) {
         //empleadocontroller filtrarEmpleadosPorCuadrilla

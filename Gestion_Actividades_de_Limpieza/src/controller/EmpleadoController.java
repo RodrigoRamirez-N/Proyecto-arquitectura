@@ -119,7 +119,7 @@ public class EmpleadoController {
     }
 
     public void asignarEmpleadoACuadrilla(int idEmpleado, int idCuadrilla) {
-        if( idEmpleado < 0 || idCuadrilla < 0) {
+        if( idEmpleado < 0 || idCuadrilla < 0 || idCuadrilla == -1) {
             throw new IllegalArgumentException("El id no puede ser negativo");
         }
         try {
