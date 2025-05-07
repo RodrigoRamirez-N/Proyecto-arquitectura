@@ -91,7 +91,7 @@ public class ActividadController {
     }
 
     // Obtener actividades por fecha
-    public List<Actividad> getActividadesByFecha(String fecha) {
+    public List<Actividad> getActividadesByFecha(java.sql.Date fecha) {
         try {
             return actividadDAO.getByFecha(fecha);
         } catch (SQLException e) {

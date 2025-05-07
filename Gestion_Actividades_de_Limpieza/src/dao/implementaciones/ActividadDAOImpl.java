@@ -197,11 +197,11 @@ public class ActividadDAOImpl implements ActividadDAO {
     }
 
     @Override
-    public List<Actividad> getByFecha(String fecha) throws SQLException {
+    public List<Actividad> getByFecha(java.sql.Date fecha) throws SQLException {
         List<Actividad> lista = new ArrayList<>();
         try {
             conexion.prepareCall("sp_GetActividadesByFecha", 1);
-            conexion.comando.setString(1, fecha);
+            conexion.comando.setDate(1, fecha);
             ResultSet rs = conexion.executeResultSet();
 
             while (rs.next()) {

@@ -16,7 +16,7 @@ public interface ActividadDAO {
     List<Actividad> getAll() throws SQLException; //retorna una lista de objetos Actividad
     List<Actividad> getByColonia(int idColonia) throws SQLException; //retorna una lista de objetos Actividad por idColonia
     List<Actividad> getByCuadrilla(int idCuadrilla) throws SQLException; //retorna una lista de objetos Actividad por idCuadrilla
-    List<Actividad> getByFecha(String fecha) throws SQLException; //retorna una lista de objetos Actividad por fecha
+    List<Actividad> getByFecha(java.sql.Date fecha) throws SQLException; //retorna una lista de objetos Actividad por fecha
     
     //rutaImagen puede ser nullable? se puede dejar como vacío si se especifica que la actividad no tiene evidencia o sea que no ha sido terminada o sea que sigue en proceso...
 

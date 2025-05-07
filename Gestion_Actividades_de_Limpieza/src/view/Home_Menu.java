@@ -53,6 +53,7 @@ public class Home_Menu extends javax.swing.JFrame {
         refreshColoniaTable();
         refreshActividadTable();
         loadComboBoxCuadrillas();
+        loadComboBoxColonias();
         loadListOfEmpleados();
         loadListOfJefes();
         setupEmpleadoTableSelection();
@@ -83,6 +84,8 @@ public class Home_Menu extends javax.swing.JFrame {
                 }
                 if("Actividades".equals(selectedTitle)) {
                     refreshActividadTable();
+                    loadComboBoxColonias();
+                    loadComboBoxCuadrillas();
                 }
                 if("Jefes".equals(selectedTitle)) {
                     refreshJefeTable();
@@ -232,6 +235,11 @@ public class Home_Menu extends javax.swing.JFrame {
         lblCerrarSession = new javax.swing.JLabel();
         lblTitulote = new javax.swing.JLabel();
         lblUserLoggedInfo = new javax.swing.JLabel();
+        btnBuscarActsPorFecha = new javax.swing.JButton();
+        cbListaCuadrillas_Actividades = new javax.swing.JComboBox<>();
+        cbListaColonias_Actividades = new javax.swing.JComboBox<>();
+        btnBuscarActsPorCuadrilla = new javax.swing.JButton();
+        btnBuscarActsPorColonia = new javax.swing.JButton();
         footerPanel = new javax.swing.JPanel();
         lblFooterIMG = new javax.swing.JLabel();
         mainTabbedPane = new javax.swing.JTabbedPane();
@@ -352,7 +360,6 @@ public class Home_Menu extends javax.swing.JFrame {
         btnUploadFile = new javax.swing.JButton();
         jLabel16 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
         txt_Id_Cuad = new javax.swing.JTextField();
         txt_Id_Col = new javax.swing.JTextField();
         txt_Id_User = new javax.swing.JTextField();
@@ -1535,29 +1542,47 @@ public class Home_Menu extends javax.swing.JFrame {
             }
         });
 
-        jLabel16.setText("Id Cuadrilla");
+        
+        jLabel16.setText("Cuadrillas");
 
-        jLabel21.setText("Id Colonia");
+        jLabel21.setText("Colonias");
 
-        jLabel22.setText("Id Usuario");
-
-        txt_Id_Cuad.setText("Ingresa el id de la cuadrilla");
-        txt_Id_Cuad.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                txt_Id_CuadMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                txt_Id_CuadMouseExited(evt);
+        btnBuscarActsPorFecha.setIcon(new ImageIcon(ImagenRuta.SEARCH_ICON.getRuta())); // NOI18N
+        btnBuscarActsPorFecha.setToolTipText("Actividades por fecha");
+        btnBuscarActsPorFecha.setBorderPainted(false);
+        btnBuscarActsPorFecha.setContentAreaFilled(false);
+        btnBuscarActsPorFecha.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBuscarActsPorFecha.setFocusPainted(false);
+        btnBuscarActsPorFecha.setPreferredSize(new java.awt.Dimension(75, 22));
+        btnBuscarActsPorFecha.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBuscarActsPorFechaMouseClicked(evt);
             }
         });
 
-        txt_Id_Col.setText("Ingresa el id de la colonia");
-        txt_Id_Col.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                txt_Id_ColMouseEntered(evt);
+        btnBuscarActsPorCuadrilla.setIcon(new ImageIcon(ImagenRuta.SEARCH_ICON.getRuta())); // NOI18N
+        btnBuscarActsPorCuadrilla.setToolTipText("Actividades por cuadrilla");
+        btnBuscarActsPorCuadrilla.setBorderPainted(false);
+        btnBuscarActsPorCuadrilla.setContentAreaFilled(false);
+        btnBuscarActsPorCuadrilla.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBuscarActsPorCuadrilla.setFocusPainted(false);
+        btnBuscarActsPorCuadrilla.setPreferredSize(new java.awt.Dimension(75, 22));
+        btnBuscarActsPorCuadrilla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBuscarActsPorCuadrillaMouseClicked(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                txt_Id_ColMouseExited(evt);
+        });
+
+        btnBuscarActsPorColonia.setIcon(new ImageIcon(ImagenRuta.SEARCH_ICON.getRuta())); // NOI18N
+        btnBuscarActsPorColonia.setToolTipText("Actividades por colonia");
+        btnBuscarActsPorColonia.setBorderPainted(false);
+        btnBuscarActsPorColonia.setContentAreaFilled(false);
+        btnBuscarActsPorColonia.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBuscarActsPorColonia.setFocusPainted(false);
+        btnBuscarActsPorColonia.setPreferredSize(new java.awt.Dimension(75, 22));
+        btnBuscarActsPorColonia.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBuscarActsPorColoniaMouseClicked(evt);
             }
         });
 
@@ -1586,27 +1611,32 @@ public class Home_Menu extends javax.swing.JFrame {
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15)
                     .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(textFieldsPanelActividadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(dateChFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(textFieldsPanelActividadLayout.createSequentialGroup()
+                        .addComponent(dateChFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnBuscarActsPorFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(textFieldsPanelActividadLayout.createSequentialGroup()
                         .addGroup(textFieldsPanelActividadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, textFieldsPanelActividadLayout.createSequentialGroup()
-                                .addComponent(btnUploadFile)
-                                .addGap(18, 18, 18)
-                                .addComponent(lbl_Image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(txt_Id_User, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_Id_Col, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_Id_Cuad, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_Image, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnUploadFile, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cbEstado, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txt_Id_Actividad, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
                             .addComponent(cbTipo, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBuscarActividad, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnBuscarActividad, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(textFieldsPanelActividadLayout.createSequentialGroup()
+                        .addComponent(cbListaCuadrillas_Actividades, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnBuscarActsPorCuadrilla, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(textFieldsPanelActividadLayout.createSequentialGroup()
+                        .addComponent(cbListaColonias_Actividades, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnBuscarActsPorColonia, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         textFieldsPanelActividadLayout.setVerticalGroup(
             textFieldsPanelActividadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1631,29 +1661,31 @@ public class Home_Menu extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addGroup(textFieldsPanelActividadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel20)
-                    .addComponent(dateChFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dateChFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscarActsPorFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(textFieldsPanelActividadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(cbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(textFieldsPanelActividadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel16)
-                    .addComponent(txt_Id_Cuad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(textFieldsPanelActividadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel21)
-                    .addComponent(txt_Id_Col, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(textFieldsPanelActividadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel22)
-                    .addComponent(txt_Id_User, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(textFieldsPanelActividadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(textFieldsPanelActividadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel16)
+                        .addComponent(cbListaCuadrillas_Actividades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnBuscarActsPorCuadrilla, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(textFieldsPanelActividadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(textFieldsPanelActividadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel21)
+                        .addComponent(cbListaColonias_Actividades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnBuscarActsPorColonia, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(textFieldsPanelActividadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
-                    .addComponent(btnUploadFile)
-                    .addComponent(lbl_Image, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE))
-                .addContainerGap(64, Short.MAX_VALUE))
+                    .addComponent(btnUploadFile))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lbl_Image, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         inputPanelActividad.add(textFieldsPanelActividad, java.awt.BorderLayout.CENTER);
@@ -1922,34 +1954,6 @@ public class Home_Menu extends javax.swing.JFrame {
         }
     }
 
-    private void txt_Id_CuadMouseEntered(java.awt.event.MouseEvent evt) {
-        if(txt_Id_Cuad.getText().equals("Ingresa el id de la cuadrilla")){
-            txt_Id_Cuad.setText("");
-            txt_Id_Cuad.setForeground(inputColor);
-        }
-    }
-
-    private void txt_Id_CuadMouseExited(java.awt.event.MouseEvent evt) {
-        if(txt_Id_Cuad.getText().isEmpty()){
-            txt_Id_Cuad.setText("Ingresa el id de la cuadrilla");
-            txt_Id_Cuad.setForeground(placeholderColor);
-        }
-    }
-
-    private void txt_Id_ColMouseEntered(java.awt.event.MouseEvent evt) {
-        if(txt_Id_Col.getText().equals("Ingresa el id de la colonia")){
-            txt_Id_Col.setText("");
-            txt_Id_Col.setForeground(inputColor);
-        }
-    }
-
-    private void txt_Id_ColMouseExited(java.awt.event.MouseEvent evt) {
-        if(txt_Id_Col.getText().isEmpty()){
-            txt_Id_Col.setText("Ingresa el id de la colonia");
-            txt_Id_Col.setForeground(placeholderColor);
-        }
-    }
-
     private void txt_Id_UserMouseEntered(java.awt.event.MouseEvent evt) {
         //rescatar el id del usuario en la sesión actual
         if(txt_Id_User.getText().equals("Ingresa el id del usuario que registró")){
@@ -2143,12 +2147,14 @@ public class Home_Menu extends javax.swing.JFrame {
             ResultSet resultSet = stmt.executeQuery(sql);
             // Clear the existing items in the combo box
             cbListaCuadrillas.removeAllItems();
+            cbListaCuadrillas_Actividades.removeAllItems();
             cuadrillaMap.clear();
             // Iterate through the result set and add items to the combo box
             while (resultSet.next()) {
                 String cuadrillaId = resultSet.getString("cuadrilla_id");
                 String nombreCuadrilla = resultSet.getString("NombreCuadrilla");
                 cbListaCuadrillas.addItem(nombreCuadrilla); // Add the name to the combo box
+                cbListaCuadrillas_Actividades.addItem(nombreCuadrilla); // Add the name to the second combo box
                 cuadrillaMap.put(nombreCuadrilla, cuadrillaId); // Store the ID in the map
             }
             
@@ -2156,6 +2162,112 @@ public class Home_Menu extends javax.swing.JFrame {
             Logger.getLogger(Home_Menu.class.getName());
         }
 
+    }
+    
+    private void btnBuscarActsPorFechaMouseClicked(java.awt.event.MouseEvent evt) {
+        //actividadcontroller leerActividad()
+        //then refresh table
+        ActividadController actividadController = new ActividadController();
+
+        java.util.Date selectedDate = dateChFecha.getSelectedDate().getTime();
+        java.sql.Date sqlDate = new java.sql.Date(selectedDate.getTime());
+
+        List<Actividad> listActividades = actividadController.getActividadesByFecha(sqlDate);
+        DefaultTableModel model = (DefaultTableModel) ActividadTable.getModel();
+        model.setRowCount(0); // Clear existing rows
+        for (Actividad actividad : listActividades) {
+            Object[] row = new Object[9];
+            row[0] = actividad.getActividad_id();
+            row[1] = actividad.getDetalles();
+            row[2] = actividad.getTipoActividad();
+            row[3] = actividad.getFecha();
+            row[4] = actividad.getEstado();
+            row[5] = actividad.getCuadrilla_id();
+            row[6] = actividad.getCve_colonia();
+            row[7] = actividad.getUsuario_registro_id();
+            row[8] = actividad.getImagenEvidencia();
+            model.addRow(row);
+        }
+    }
+
+    private void btnBuscarActsPorCuadrillaMouseClicked(java.awt.event.MouseEvent evt) {
+        //actividadcontroller leerActividad()
+        //then refresh table
+        ActividadController actividadController = new ActividadController();
+        String selectedCuadrilla = (String) cbListaCuadrillas_Actividades.getSelectedItem();
+        int cuadrillaId = Integer.parseInt(cuadrillaMap.get(selectedCuadrilla));
+        List<Actividad> listActividades = actividadController.getActividadesByCuadrilla(cuadrillaId);
+        DefaultTableModel model = (DefaultTableModel) ActividadTable.getModel();
+        model.setRowCount(0); // Clear existing rows
+        for (Actividad actividad : listActividades) {
+            Object[] row = new Object[9];
+            row[0] = actividad.getActividad_id();
+            row[1] = actividad.getDetalles();
+            row[2] = actividad.getTipoActividad();
+            row[3] = actividad.getFecha();
+            row[4] = actividad.getEstado();
+            row[5] = actividad.getCuadrilla_id();
+            row[6] = actividad.getCve_colonia();
+            row[7] = actividad.getUsuario_registro_id();
+            row[8] = actividad.getImagenEvidencia();
+            model.addRow(row);
+        }
+    }
+
+    private void btnBuscarActsPorColoniaMouseClicked(java.awt.event.MouseEvent evt) {
+        //actividadcontroller leerActividad()
+        //then refresh table
+        System.out.println("btnBuscarActsPorColoniaMouseClicked");
+        ActividadController actividadController = new ActividadController();
+        String selectedColonia = (String) cbListaColonias_Actividades.getSelectedItem();
+        int coloniaId = Integer.parseInt(coloniaMap.get(selectedColonia));
+        System.out.println("Colonia ID: " + coloniaId);
+        System.out.println("Selected Colonia: " + selectedColonia);
+        List<Actividad> listActividades = actividadController.getActividadesByColonia(coloniaId);
+        DefaultTableModel model = (DefaultTableModel) ActividadTable.getModel();
+        model.setRowCount(0); // Clear existing rows
+        for (Actividad actividad : listActividades) {
+            Object[] row = new Object[9];
+            row[0] = actividad.getActividad_id();
+            row[1] = actividad.getDetalles();
+            row[2] = actividad.getTipoActividad();
+            row[3] = actividad.getFecha();
+            row[4] = actividad.getEstado();
+            row[5] = actividad.getCuadrilla_id();
+            row[6] = actividad.getCve_colonia();
+            row[7] = actividad.getUsuario_registro_id();
+            row[8] = actividad.getImagenEvidencia();
+            model.addRow(row);
+        }
+    }
+
+    private void loadComboBoxColonias(){
+        //coloniacontroller leerColonia()
+        //then refresh table
+        String url = "jdbc:mysql://localhost:3306/gestionlimpieza?useSSL=false&useProcedureBodies=false";
+        
+        try (Connection cnx = DriverManager.getConnection(url, "root", "rootpsw")){
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            String sql = "SELECT cve_colonia, NombreColonia FROM colonia ORDER BY cve_colonia ASC";
+
+            Statement stmt = cnx.createStatement();
+            ResultSet resultSet = stmt.executeQuery(sql);
+            // Clear the existing items in the combo box
+            cbListaColonias_Actividades.removeAllItems();
+            coloniaMap.clear();
+            // Iterate through the result set and add items to the combo box
+            while (resultSet.next()) {
+                String coloniaId = resultSet.getString("cve_colonia");
+                String nombreColonia = resultSet.getString("NombreColonia");
+                String item = "[" + coloniaId + "] " + nombreColonia;
+                cbListaColonias_Actividades.addItem(item);  // Add the formatted item to the combo box
+                coloniaMap.put(item, coloniaId);  // Store the ID in the map
+            }
+            
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Home_Menu.class.getName());
+        }
     }
     
     private void loadListOfEmpleados(){
@@ -2564,8 +2676,8 @@ public class Home_Menu extends javax.swing.JFrame {
             sqlDate,
             uploadedFilePath,
             cbEstado.getSelectedItem().toString(),
-            Integer.parseInt(txt_Id_Cuad.getText()),
-            Integer.parseInt(txt_Id_Col.getText()),
+            Integer.parseInt(cuadrillaMap.get(cbListaCuadrillas_Actividades.getSelectedItem().toString())),
+            Integer.parseInt(coloniaMap.get(cbListaColonias_Actividades.getSelectedItem().toString())),
             usuarioActual.getId() //rescatar el id del usuario en la sesión actual
             );
         refreshActividadTable();
@@ -2596,9 +2708,9 @@ public class Home_Menu extends javax.swing.JFrame {
             (Date) dateChFecha.getSelectedDate().getTime(),
             uploadedFilePath,
             cbEstado.getSelectedItem().toString(),
-            Integer.parseInt(txt_Id_Cuad.getText()),
-            Integer.parseInt(txt_Id_Col.getText()),
-            Integer.parseInt(txt_Id_User.getText())
+            Integer.parseInt(cuadrillaMap.get(cbListaCuadrillas_Actividades.getSelectedItem().toString())),
+            Integer.parseInt(coloniaMap.get(cbListaColonias_Actividades.getSelectedItem().toString())),
+            usuarioActual.getId()
             );
         refreshActividadTable();
     }
@@ -2641,6 +2753,7 @@ public class Home_Menu extends javax.swing.JFrame {
     private Map<String, String> cuadrillaMap = new HashMap<>();
     private Map<String, String> jefeMap = new HashMap<>();
     private Map<String, String> empleadoMap = new HashMap<>();
+    private Map<String, String> coloniaMap = new HashMap<>();
     private javax.swing.JPanel ActividadTabPanel;
     private javax.swing.JTable ActividadTable;
     private javax.swing.JSplitPane ColoniaSplitPane;
@@ -2722,7 +2835,6 @@ public class Home_Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
@@ -2774,4 +2886,10 @@ public class Home_Menu extends javax.swing.JFrame {
     private javax.swing.JPasswordField txt_Password_Jefe;
     private javax.swing.JTextField txt_Tel_Empleado;
     private javax.swing.JTextField txt_Tel_Jefe;
+
+    private javax.swing.JButton btnBuscarActsPorColonia;
+    private javax.swing.JButton btnBuscarActsPorCuadrilla;
+    private javax.swing.JButton btnBuscarActsPorFecha;
+    private javax.swing.JComboBox<String> cbListaCuadrillas_Actividades;
+    private javax.swing.JComboBox<String> cbListaColonias_Actividades;
 }
