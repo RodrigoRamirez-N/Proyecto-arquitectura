@@ -50,8 +50,6 @@ public class CuadrillaDAOImpl implements CuadrillaDAO {
         return null;
     }
     
-    
-
     @Override
     public Cuadrilla readCuadrilla(int idCuadrilla) {
         Conexion conexion = new Conexion();

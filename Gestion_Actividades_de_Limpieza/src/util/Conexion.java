@@ -26,7 +26,6 @@ public class Conexion {
         }
     }
 
-
     public void closeConnection() {
         try {
             if (comando != null)
@@ -37,8 +36,6 @@ public class Conexion {
             System.err.println("Error al cerrar la conexión: " + e.getMessage());
         }
     }
-
-
 
     public void prepareCall(String sp, int numParams) throws SQLException {
         try {
